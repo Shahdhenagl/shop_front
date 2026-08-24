@@ -1,14 +1,13 @@
 // Style: SAFETY ENG — صفحة تواصل دافئة وعملية، تجعل طلب المعاينة خطوة مباشرة وواضحة.
 import { FormEvent, useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, Check, LocateFixed, LoaderCircle, MapPin, MessageCircle, Moon, Sun, Upload, Wrench } from "lucide-react";
+import { ArrowLeft, Check, LocateFixed, LoaderCircle, MapPin, MessageCircle, Upload, Wrench } from "lucide-react";
 import { toast } from "sonner";
 import { createServiceRequest } from "@/lib/api";
-import { useTheme } from "@/contexts/ThemeContext";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import InnerHeader from "@/components/InnerHeader";
 
 export default function Contact() {
-  const { theme, toggleTheme } = useTheme();
   const [serviceFiles, setServiceFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -51,16 +50,7 @@ export default function Contact() {
 
   return (
     <div dir="rtl" className="min-h-screen bg-[#fbfaf7] text-[#172f3c]">
-      <header className="inner-header">
-        <div className="container flex items-center justify-between">
-          <Link href="/" className="brand-lockup" dir="ltr"><span className="logo-mark" aria-hidden="true"><span className="logo-graphic">S</span></span><b>SAFETY<span> ENG</span></b></Link>
-          <div className="inner-actions">
-            <button className="theme-toggle" onClick={toggleTheme} aria-label="تبديل الوضع الليلي">{theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}</button>
-            <Link href="/shop" className="icon-link">المتجر</Link>
-            <Link href="/cart" className="icon-link">العربة</Link>
-          </div>
-        </div>
-      </header>
+      <InnerHeader />
       <main className="container contact-page">
         <Breadcrumbs items={[{ label: "تواصل معنا" }]} />
         <section className="contact-hero">
