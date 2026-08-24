@@ -52,6 +52,7 @@ export function normalizeProduct(raw: RawProduct, index: number): Product {
     specs: [raw.sku ? `SKU: ${raw.sku}` : "منتج أصلي", firstVariant.stock != null ? `متاح: ${firstVariant.stock}` : "متاح حسب المخزون", variants.length ? `${variants.length} خيارات` : "ضمان ودعم متاح"],
     brand: localized(raw.brand_name ?? raw.brand ?? raw.manufacturer, "SAFETY ENG"),
     stock: firstVariant.stock != null || raw.stock != null ? Number(firstVariant.stock ?? raw.stock) : undefined,
+    salesCount: raw.sales_count ?? raw.sold_count ?? raw.orders_count ?? undefined,
     isAvailable: raw.in_stock ?? raw.is_available ?? raw.is_active ?? undefined,
   };
 }

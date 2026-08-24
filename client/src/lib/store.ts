@@ -1,6 +1,6 @@
 // SAFETY ENG store model — حلول مراقبة وأمن وحضور وشاشات، مع بيانات موحدة للمتجر.
 export type Product = {
-  id: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; brand?: string; stock?: number; isAvailable?: boolean; installable?: boolean; installationFee?: number;
+  id: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; brand?: string; stock?: number; salesCount?: number; isAvailable?: boolean; installable?: boolean; installationFee?: number;
 };
 
 export const products: Product[] = [
@@ -23,6 +23,8 @@ export function getInstallationFee(product: Product) { if (product.installable =
 export function isInstallable(product: Product) { return getInstallationFee(product) > 0; }
 export function getProductBrand(product: Product) { return product.brand?.trim() || "SAFETY ENG"; }
 export function isInStock(product: Product) { if (product.isAvailable === false) return false; return product.stock == null || product.stock > 0; }
+export function getProductSalesScore(product: Product) { if (product.salesCount != null) return product.salesCount; if (product.badge.includes("الأكثر")) return 100; if (product.badge.includes("اختيار")) return 85; if (product.badge.includes("باكدج")) return 70; if (product.badge.includes("عرض")) return 60; return 20; }
+export function isBestSeller(product: Product) { return product.salesCount != null ? product.salesCount >= 50 : /الأكثر|اختيار|باكدج/.test(product.badge); }
 export function formatPrice(price: number) { return `${price.toLocaleString("ar-EG")} ج.م`; }
 export function readIds(key: string): number[] { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
 export function saveIds(key: string, ids: number[]) { localStorage.setItem(key, JSON.stringify(ids)); }
