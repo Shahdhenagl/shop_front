@@ -103,3 +103,20 @@
 - [x] احتساب رسوم التركيب في Checkout وإرسالها ضمن بيانات الطلب عند توفر API.
 - [x] توثيق الحقول المطلوبة ليسرا: installation_fee وinstallation_requested.
 - [x] اختبار الإجماليات وحفظ checkpoint ورفع النسخة.
+
+## Backend gaps review
+
+- [ ] تأكيد إصلاح syntax في OrderController.
+- [ ] إضافة أو تأكيد حقول رسوم التركيب داخل المنتجات والطلبات.
+- [ ] تحديد cart item وproduct variant IDs بشكل ثابت.
+- [ ] تحديد حقول الشحن والدفع والاستجابة النهائية لإنشاء الطلب.
+- [ ] إضافة Service Request API لطلبات التركيب والصيانة ورفع الصور والموقع.
+- [ ] تأكيد CORS والتوثيق والاستجابات وحالات الخطأ.
+
+## Hostinger deployment
+
+- [x] إضافة إعدادات production build المناسبة لـ Hostinger.
+- [x] إضافة rewrite لـ SPA حتى تعمل مسارات `/shop` و`/product/:id` بعد refresh.
+- [x] توثيق `VITE_API_BASE_URL` ومتطلبات HTTPS وCORS.
+- [x] تجهيز تعليمات ربط GitHub داخل Hostinger وخطوات النشر.
+- [x] تشغيل build نهائي وحفظ checkpoint ورفع النسخة.
