@@ -116,3 +116,22 @@ html.dark .mobile-search .search-box, html.dark .shop-search-wrap .shop-search {
 .note-three { right: 1%; bottom: 10%; background: #e8f7f4; color: #168e8a; transform: rotate(8deg); }
 @media (max-width: 560px) { .hero-dashboard { min-height: 315px; margin-top: 12px; }.hero-dashboard .hero-shape { width: 230px; height: 230px; right: 8%; top: 11%; }.security-board { padding: 11px; border-radius: 20px; box-shadow: 0 18px 35px #174b4d1c, 0 5px 0 #fbda62; }.board-screen { min-height: 165px; margin-top: 10px; }.screen-center { gap: 5px; padding: 12px; }.screen-center svg { width: 24px; }.screen-center b { font-size: 12px; }.screen-center small { font-size: 9px; }.board-cards { gap: 5px; margin-top: 7px; }.board-cards > div { grid-template-columns: auto 1fr; padding: 7px 5px; }.board-cards b { display: none; }.board-cards span { font-size: 8px; }.floating-note.note-three { right: 0; bottom: 2%; } }
 .dark .security-board { border-color: #345b61; background: #163843; box-shadow: 0 26px 60px #0000003d, 0 7px 0 #c79e36; }.dark .board-topline { color: #d6eee8; }.dark .board-cards > div { border-color: #315760; background: #214c55; }.dark .board-cards span { color: #9bbab3; }.dark .board-cards b { color: #e7f3f0; }.dark .logo-graphic { background: #214c55; color: #79d3c3; border-color: #79d3c3; }
+
+/* Dark mode polish: clearer surfaces, warmer accents, and tighter section rhythm. */
+html.dark .service-banner { border-color: #356d73; background-color: #1b4a53; background-image: radial-gradient(#4c7e81 1px, transparent 1px); box-shadow: 0 20px 55px #06191f55; }
+html.dark .service-banner h2, html.dark .service-banner .section-kicker { color: #effbf7; }
+html.dark .service-banner p { color: #c1d9d3; }
+html.dark .service-card { border: 1px solid #3b7075; background: #255760; box-shadow: 0 10px 24px #06191f2e; }
+html.dark .service-card h3 { color: #f2fbf8; }
+html.dark .service-card p { color: #b9d2cc; }
+html.dark .service-arrow { color: #8fd4c8; }
+html.dark .service-request-section { margin-top: 72px; border-color: #356d73; background: #1b4a53; box-shadow: 0 20px 55px #06191f33; }
+html.dark .service-request-copy h2, html.dark .service-request-copy .section-kicker { color: #effbf7; }
+html.dark .service-request-copy p, html.dark .service-points { color: #c1d9d3; }
+html.dark .service-request-form { border-color: #3b7075; background: #163a43; box-shadow: 0 14px 32px #06191f3d; }
+html.dark .service-request-form h3 { color: #f2fbf8; }
+html.dark .service-request-form input, html.dark .service-request-form select, html.dark .service-request-form textarea { border-color: #3b7075; background: #102d36; color: #f2fbf8; }
+html.dark .service-request-form input::placeholder, html.dark .service-request-form textarea::placeholder { color: #89aaa5; }
+html.dark .about-section { padding-block: 88px; border-top: 1px solid #31545c; }
+html.dark .about-section h2, html.dark .about-section .section-kicker { color: #effbf7; }
+@media (max-width: 900px) { html.dark .service-banner, html.dark .service-request-section { box-shadow: 0 14px 34px #06191f33; } }
