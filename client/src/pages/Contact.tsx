@@ -11,6 +11,7 @@ export default function Contact() {
   const { theme, toggleTheme } = useTheme();
   const [serviceFiles, setServiceFiles] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [serviceLocation, setServiceLocation] = useState("");
 
   const captureLocation = () => {
@@ -35,6 +36,7 @@ export default function Contact() {
     try {
       await createServiceRequest(data);
       toast.success("تم حفظ طلبك بنجاح، وسيتواصل معك فريق SAFETY ENG قريبًا");
+      setIsSubmitted(true);
       event.currentTarget.reset();
       setServiceFiles([]);
       setServiceLocation("");
@@ -82,7 +84,7 @@ export default function Contact() {
             {serviceFiles.length > 0 && <div className="file-chips">{serviceFiles.map((file) => <span key={file.name}><Upload size={12} /> {file.name}</span>)}</div>}
             <div className="location-actions"><button type="button" className="location-button" onClick={captureLocation}><LocateFixed size={15} /> تحديد موقعي تلقائيًا</button><label className="location-input"><MapPin size={15} /><input value={serviceLocation} onChange={(event) => setServiceLocation(event.target.value)} placeholder="أو الصق رابط Google Maps" /></label></div>
             <small className="form-help">سيتم حفظ الطلب في النظام أولًا، وإذا تعذر الاتصال سنجهز رسالة واتساب بالبيانات كخطة احتياطية.</small>
-            <button className="primary-button" type="submit" disabled={isSubmitting}>{isSubmitting ? <><LoaderCircle className="loading-spinner" size={16} /> جاري إرسال الطلب...</> : <>إرسال الطلب <MessageCircle size={16} /></>}</button>
+            <button className="primary-button" type="submit" disabled={isSubmitting}>{isSubmitting ? <><LoaderCircle className="loading-spinner" size={16} /> جاري إرسال الطلب...</> : <>إرسال الطلب <MessageCircle size={16} /></>}</button>{isSubmitted && <div className="service-success-message" role="status" aria-live="polite"><Check size={20} /><span><b>تم استلام طلبك بنجاح</b><small>سيتواصل معك فريق SAFETY ENG قريبًا لتأكيد التفاصيل والموعد.</small></span></div>}
           </form>
         </section>
         <Link href="/shop" className="secondary-button contact-shop-link">تصفحي المنتجات <ArrowLeft size={16} /></Link>

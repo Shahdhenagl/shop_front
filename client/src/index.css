@@ -174,6 +174,65 @@ html.dark .installable-toggle { border-color: #3b7075; color: #a5eee0; backgroun
 @media (max-width: 760px) { .home-category-banners { margin-top: 48px; }.home-category-grid { grid-template-columns: 1fr; gap: 10px; }.home-category-banner { min-height: 96px; padding: 17px; }.shop-page .breadcrumbs { margin-bottom: 17px; }.installable-toggle { flex: 1 1 100%; justify-content: center; } }
 
 /* Service contact + search results — direct actions, readable filters, and visual section guidance. */
+/* Shop UX polish — تصنيفات واضحة، أعداد مفيدة، وQuick View بدون مغادرة الكتالوج. */
+.shop-toolbar { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 12px; align-items: stretch; margin-top: 28px; padding: 14px; border: 1px solid #e2ebe6; border-radius: 16px; background: #fff; box-shadow: 0 14px 32px #173f460b; }
+.filter-section { min-width: 0; border: 1px solid #e3ebe6; border-radius: 12px; padding: 13px; background: #fbfaf7; }
+.filter-section-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.filter-section-head h3 { margin-top: 3px; color: #173f46; font-size: 13px; }
+.filter-kicker { color: #18a7a1; font-size: 9px; font-weight: 900; }
+.filter-count { color: #7b918a; font-size: 10px; font-weight: 800; }
+.category-filter-section { grid-column: 1 / -1; }
+.category-filter-list { display: flex; flex-wrap: wrap; gap: 7px; }
+.category-filter-pill { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; border: 1px solid #dbe8e1; border-radius: 8px; padding: 6px 9px; background: #fff; color: #66807a; font-size: 10px; font-weight: 800; transition: .18s; }
+.category-filter-pill b { display: grid; min-width: 19px; height: 19px; place-items: center; border-radius: 6px; background: #eaf8f6; color: #168e8a; font-size: 9px; }
+.category-filter-pill:hover, .category-filter-pill.active { border-color: #18a7a1; color: #168e8a; }
+.category-filter-pill.active { background: #eaf8f6; box-shadow: 0 5px 13px #18a7a116; }
+.price-filter-section { min-height: 132px; }
+.price-range-value { color: #168e8a; font-size: 11px; white-space: nowrap; }
+.price-number-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+.price-number-fields label { display: grid; gap: 4px; color: #71847f; font-size: 9px; font-weight: 800; }
+.price-number-fields input { width: 100%; border: 1px solid #dce8e2; border-radius: 7px; padding: 7px 8px; background: #fff; color: #294650; font: inherit; font-size: 10px; outline: 0; }
+.detail-filter-section { min-height: 132px; }
+.filter-control-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.filter-control-grid .toolbar-field { min-width: 0; }
+.filter-control-grid .toolbar-field select { width: 100%; min-width: 0; }
+.filter-control-grid .installable-toggle { min-width: 0; justify-content: center; }
+.quick-view-button { position: absolute; z-index: 3; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 5px; border: 1px solid #ffffffaa; border-radius: 7px; padding: 7px 9px; background: #173f46dd; color: #fff; font-size: 9px; font-weight: 900; opacity: 0; transform: translateY(5px); transition: opacity .18s, transform .18s, background .18s; }
+.product-card:hover .quick-view-button, .quick-view-button:focus-visible { opacity: 1; transform: translateY(0); }
+.quick-view-button:hover { background: #18a7a1; }
+.quick-view-dialog { max-width: 760px; border-color: #d6e8e1; background: #fbfaf7; }
+.quick-view-dialog > button { color: #526d68; }
+.quick-view-body { display: grid; grid-template-columns: .9fr 1.1fr; gap: 22px; align-items: center; }
+.quick-view-image { min-height: 280px; display: grid; place-items: center; overflow: hidden; border-radius: 14px; }
+.quick-view-image img { width: 100%; height: 100%; min-height: 280px; object-fit: cover; mix-blend-mode: multiply; }
+.quick-view-copy { display: grid; gap: 9px; }
+.quick-view-category { color: #18a7a1; font-size: 10px; font-weight: 900; }
+.quick-view-copy h2 { color: #173f46; }
+.quick-view-price { color: #18a7a1; font: 800 23px 'Plus Jakarta Sans', 'Cairo'; }
+.quick-view-copy p { color: #70817d; font-size: 12px; line-height: 1.9; }
+.quick-view-copy ul { display: grid; gap: 6px; padding: 0; list-style: none; color: #526d68; font-size: 11px; }
+.quick-view-copy li { display: flex; align-items: center; gap: 6px; }
+.quick-view-copy li svg { color: #18a7a1; }
+.quick-view-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.quick-view-actions > * { flex: 1; justify-content: center; }
+.service-success-message { display: flex; align-items: center; gap: 10px; margin-top: 10px; border: 1px solid #a9ded1; border-radius: 10px; padding: 11px 12px; background: #e7f8f2; color: #168e8a; animation: rise-in .28s ease-out both; }
+.service-success-message > span { display: grid; gap: 3px; }
+.service-success-message b { color: #126a69; font-size: 11px; }
+.service-success-message small { color: #4d7770; font-size: 10px; line-height: 1.6; }
+html.dark .shop-toolbar, html.dark .filter-section { border-color: #31545c; background: #173943; }
+html.dark .filter-section-head h3, html.dark .category-filter-pill { color: #effbf7; }
+html.dark .category-filter-pill, html.dark .price-number-fields input { border-color: #31545c; background: #102d36; }
+html.dark .category-filter-pill b { background: #214c55; color: #a5eee0; }
+html.dark .category-filter-pill.active { background: #214c55; }
+html.dark .price-number-fields label, html.dark .filter-count { color: #b8cec7; }
+html.dark .price-number-fields input { color: #effbf7; }
+html.dark .quick-view-dialog { border-color: #356d73; background: #173943; }
+html.dark .quick-view-dialog > button, html.dark .quick-view-copy h2, html.dark .quick-view-copy p, html.dark .quick-view-copy ul { color: #effbf7; }
+html.dark .service-success-message { border-color: #3b8278; background: #173f46; }
+html.dark .service-success-message b { color: #a5eee0; }
+html.dark .service-success-message small { color: #c0d8d1; }
+@media (max-width: 760px) { .shop-toolbar { grid-template-columns: 1fr; }.category-filter-section { grid-column: auto; }.quick-view-body { grid-template-columns: 1fr; }.quick-view-image, .quick-view-image img { min-height: 210px; }.quick-view-button { opacity: 1; transform: none; } }
+@media (max-width: 560px) { .category-filter-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }.category-filter-pill { justify-content: space-between; }.filter-control-grid { grid-template-columns: 1fr; }.quick-view-actions { display: grid; grid-template-columns: 1fr; } }
 .search-box button { display: grid; flex: none; place-items: center; border: 0; padding: 3px; color: #168e8a; background: transparent; cursor: pointer; }
 .search-box button:hover { color: #0e6f6c; }
 .price-range-control { flex: 1 1 250px; min-width: 220px; border: 1px solid #dce8e2; border-radius: 9px; padding: 8px 11px; background: #fbfaf7; }
