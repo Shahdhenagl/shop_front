@@ -53,6 +53,9 @@ export function normalizeProduct(raw: RawProduct, index: number): Product {
     brand: localized(raw.brand_name ?? raw.brand ?? raw.manufacturer, "SAFETY ENG"),
     stock: firstVariant.stock != null || raw.stock != null ? Number(firstVariant.stock ?? raw.stock) : undefined,
     salesCount: raw.sales_count ?? raw.sold_count ?? raw.orders_count ?? undefined,
+    ratingAverage: raw.rating_average ?? raw.average_rating ?? raw.rating ?? undefined,
+    ratingCount: raw.rating_count ?? raw.reviews_count ?? raw.total_reviews ?? undefined,
+    viewsCount: raw.views_count ?? raw.view_count ?? raw.total_views ?? undefined,
     isAvailable: raw.in_stock ?? raw.is_available ?? raw.is_active ?? undefined,
   };
 }
