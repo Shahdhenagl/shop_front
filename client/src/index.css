@@ -135,3 +135,40 @@ html.dark .service-request-form input::placeholder, html.dark .service-request-f
 html.dark .about-section { padding-block: 88px; border-top: 1px solid #31545c; }
 html.dark .about-section h2, html.dark .about-section .section-kicker { color: #effbf7; }
 @media (max-width: 900px) { html.dark .service-banner, html.dark .service-request-section { box-shadow: 0 14px 34px #06191f33; } }
+
+/* Home category banners + breadcrumbs + install filter — guided paths for the SAFETY ENG catalog. */
+.breadcrumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 22px; color: #84928e; font-size: 10px; font-weight: 800; }
+.breadcrumbs > a, .breadcrumbs-segment { display: inline-flex; align-items: center; gap: 4px; }
+.breadcrumbs a { color: #168e8a; transition: color .18s ease-out; }
+.breadcrumbs a:hover { color: #0e6f6c; }
+.breadcrumbs-segment { color: #687c77; }
+.breadcrumbs-segment svg { color: #a4b4af; }
+.home-category-banners { margin-top: 70px; }
+.home-category-banners .section-heading { margin-bottom: 20px; }
+.home-category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.home-category-banner { position: relative; display: flex; min-height: 132px; align-items: center; gap: 13px; overflow: hidden; border: 1px solid #e3ebe6; border-radius: 16px; padding: 22px; color: #173f46; box-shadow: 0 12px 28px #173f4610; transition: transform .18s ease-out, box-shadow .18s ease-out; }
+.home-category-banner::after { position: absolute; right: -30px; bottom: -42px; width: 120px; height: 120px; border-radius: 50%; background: #ffffff55; content: ""; }
+.home-category-banner:hover { transform: translateY(-4px); box-shadow: 0 18px 34px #173f4620; }
+.home-category-banner > span:nth-child(2) { display: grid; gap: 6px; min-width: 0; }
+.home-category-banner b { font-size: 15px; }
+.home-category-banner small { max-width: 220px; color: #5e7771; font-size: 10px; line-height: 1.8; }
+.home-category-icon { position: relative; z-index: 1; display: grid; flex: none; width: 45px; height: 45px; place-items: center; border-radius: 13px; background: #ffffffaa; color: #168e8a; }
+.home-category-arrow { position: relative; z-index: 1; margin-right: auto; color: #168e8a; }
+.home-category-banner.mint { background: #dff5ef; }
+.home-category-banner.peach { background: #fff0df; }
+.home-category-banner.lemon { background: #f5f5c9; }
+.installable-toggle { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; border: 1px solid #cfe2da; border-radius: 8px; padding: 8px 10px; color: #168e8a; background: #eaf8f6; font-size: 10px; font-weight: 900; cursor: pointer; }
+.installable-toggle input { width: 15px; height: 15px; accent-color: #18a7a1; }
+.installable-toggle:has(input:focus-visible) { outline: 3px solid #18a7a133; outline-offset: 2px; }
+html.dark .breadcrumbs { color: #9db9b1; }
+html.dark .breadcrumbs-segment { color: #c1d5cf; }
+html.dark .breadcrumbs-segment svg { color: #6b9995; }
+html.dark .home-category-banner { border-color: #356d73; color: #effbf7; box-shadow: 0 12px 28px #06191f32; }
+html.dark .home-category-banner small { color: #bfd5cf; }
+html.dark .home-category-icon { background: #ffffff18; color: #8fe0d2; }
+html.dark .home-category-arrow { color: #8fe0d2; }
+html.dark .home-category-banner.mint { background: #214f55; }
+html.dark .home-category-banner.peach { background: #5a4434; }
+html.dark .home-category-banner.lemon { background: #575328; }
+html.dark .installable-toggle { border-color: #3b7075; color: #a5eee0; background: #1b4a53; }
+@media (max-width: 760px) { .home-category-banners { margin-top: 48px; }.home-category-grid { grid-template-columns: 1fr; gap: 10px; }.home-category-banner { min-height: 96px; padding: 17px; }.shop-page .breadcrumbs { margin-bottom: 17px; }.installable-toggle { flex: 1 1 100%; justify-content: center; } }
