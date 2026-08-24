@@ -1,4 +1,5 @@
 // Style: SAFETY ENG — نتائج بحث مباشرة ومرتبة، مع فلاتر عملية تساعد العميل على قرار شراء واضح.
+import SiteFooter from "@/components/SiteFooter";
 import InnerHeader from "@/components/InnerHeader";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -64,6 +65,7 @@ export default function SearchResults() {
         <div className="search-results-meta"><span>{loading ? "جاري تحديث النتائج..." : `${visible.length} نتائج مطابقة`}</span>{isRemote && !loading && <small>بيانات مباشرة</small>}</div>
         {visible.length ? <div className="search-results-grid">{visible.map((product) => <article className="product-card" key={product.id}><div className={`product-image ${product.tone}`}><span className="product-badge">{product.badge}</span>{isBestSeller(product) && <span className="best-seller-badge">الأكثر مبيعًا <span aria-hidden="true">★</span></span>}<button disabled={favoriteBusyIds.includes(product.id)} onClick={() => toggleFavorite(product.id)} className={`wish-button ${favoriteIds.includes(product.id) ? "is-favorite" : ""}`} aria-label="إضافة للمفضلة"><Heart size={18} fill={favoriteIds.includes(product.id) ? "currentColor" : "none"} /></button><Link href={`/product/${product.id}`} className="product-image-link"><img src={product.image} alt={product.name} /></Link></div><div className="product-info"><span>{product.category}</span><small className={`stock-state ${isInStock(product) ? "in-stock" : "out-stock"}`}>{isInStock(product) ? "متاح في المخزون" : "غير متاح حاليًا"}</small><Link href={`/product/${product.id}`}><h3>{product.name}</h3></Link><div className="price-row"><strong>{formatPrice(product.price)}</strong><del>{product.oldPrice.toLocaleString("ar-EG")}</del><Link href={`/product/${product.id}`} className="add-button" aria-label={`عرض ${product.name}`}>+</Link></div></div></article>)}</div> : <div className="search-empty"><Search size={28} /><h2>مفيش نتائج بالبحث ده</h2><p>جربي كلمة مختلفة أو وسّعي نطاق السعر والفئة.</p><Link href="/shop" className="primary-button">عرض كل المنتجات <ArrowLeft size={16} /></Link>{popularProducts.length > 0 && <div className="empty-suggestions"><div className="empty-suggestions-heading"><b>ممكن يعجبك</b><span>اختيارات عليها طلب</span></div><div className="empty-suggestions-grid">{popularProducts.map((product) => <Link href={`/product/${product.id}`} className="empty-suggestion-card" key={product.id}><img src={product.image} alt={product.name} /><span><b>{product.name}</b><small>{formatPrice(product.price)}</small></span><ArrowLeft size={14} /></Link>)}</div></div>}</div>}
       </main>
+      <SiteFooter />
     </div>
   );
 }

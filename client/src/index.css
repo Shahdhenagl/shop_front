@@ -451,3 +451,11 @@ html.dark .service-request-form.contact-form .form-help { color: #9fbab3; }
   .contact-form-intro { min-height: 0; padding: 22px; }
   .service-request-form.contact-form { padding: 20px 16px; }
 }
+
+/* Style: SAFETY ENG — أخطاء النماذج تظهر بهدوء وبوضوح، بينما تبقى حالة الإرسال مؤكدة وقابلة للملاحظة. */
+.field-error { display: block; margin-top: -2px; color: #d5655e; font-size: 10px; font-weight: 800; line-height: 1.6; }
+.service-request-form input[aria-invalid="true"] { border-color: #e2766e !important; background: #fff8f6 !important; box-shadow: 0 0 0 3px rgba(226,118,110,.1) !important; }
+.service-request-form input[aria-invalid="false"] { border-color: #79c9bb; }
+.service-request-form .primary-button[aria-busy="true"] { gap: 8px; }
+html.dark .field-error { color: #ff9a8f; }
+html.dark .service-request-form input[aria-invalid="true"] { border-color: #e2766e !important; background: #3a2529 !important; box-shadow: 0 0 0 3px rgba(226,118,110,.16) !important; }
