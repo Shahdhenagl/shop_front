@@ -3,6 +3,7 @@ import { FormEvent, useState } from "react";
 import { Link } from "wouter";
 import { ArrowLeft, Check, LocateFixed, MapPin, MessageCircle, Moon, Sun, Upload, Wrench } from "lucide-react";
 import { toast } from "sonner";
+import { createServiceRequest } from "@/lib/api";
 import { useTheme } from "@/contexts/ThemeContext";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
@@ -25,12 +26,21 @@ export default function Contact() {
     );
   };
 
-  const submitService = (event: FormEvent<HTMLFormElement>) => {
+  const submitService = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const message = `مرحبًا SAFETY ENG، أريد التواصل وطلب خدمة.\nالاسم: ${data.get("name")}\nالهاتف: ${data.get("phone")}\nالخدمة: ${data.get("service")}\nتفاصيل المكان: ${data.get("details") || "غير مذكورة"}\nالموقع: ${serviceLocation || "سيتم إرساله لاحقًا"}\nالصور المختارة: ${serviceFiles.length ? serviceFiles.map((file) => file.name).join("، ") : "لم يتم إرفاق صور"}`;
-    window.open(`https://wa.me/201604400000?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
-    toast.success("تم تجهيز رسالة واتساب ببيانات طلبك");
+    data.append("location", serviceLocation);
+    try {
+      await createServiceRequest(data);
+      toast.success("تم حفظ طلبك بنجاح، وسيتواصل معك فريق SAFETY ENG قريبًا");
+      event.currentTarget.reset();
+      setServiceFiles([]);
+      setServiceLocation("");
+    } catch {
+      const message = `مرحبًا SAFETY ENG، أريد التواصل وطلب خدمة.\nالاسم: ${data.get("name")}\nالهاتف: ${data.get("phone")}\nالخدمة: ${data.get("service")}\nتفاصيل المكان: ${data.get("details") || "غير مذكورة"}\nالموقع: ${serviceLocation || "سيتم إرساله لاحقًا"}\nالصور المختارة: ${serviceFiles.length ? serviceFiles.map((file) => file.name).join("، ") : "لم يتم إرفاق صور"}`;
+      window.open(`https://wa.me/201604400000?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+      toast.error("تعذر حفظ الطلب عبر النظام، جهزنا لك رسالة واتساب كبديل");
+    }
   };
 
   return (

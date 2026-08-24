@@ -2,6 +2,7 @@
 import type { Product } from "./store";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "https://ecommerce.pixelmindg.com/api").replace(/\/$/, "");
+export const SERVICE_REQUEST_PATH = import.meta.env.VITE_SERVICE_REQUEST_PATH || "/service-requests";
 
 type ApiResponse = { status?: string; message?: string; data?: unknown };
 type RawProduct = Record<string, any>;
@@ -49,6 +50,9 @@ export function normalizeProduct(raw: RawProduct, index: number): Product {
     tone: ["coral", "teal", "lime", "peach", "blue", "yellow"][index % 6],
     description: localized(raw.description, "حل عملي من حلول SAFETY ENG."),
     specs: [raw.sku ? `SKU: ${raw.sku}` : "منتج أصلي", firstVariant.stock != null ? `متاح: ${firstVariant.stock}` : "متاح حسب المخزون", variants.length ? `${variants.length} خيارات` : "ضمان ودعم متاح"],
+    brand: localized(raw.brand_name ?? raw.brand ?? raw.manufacturer, "SAFETY ENG"),
+    stock: firstVariant.stock != null || raw.stock != null ? Number(firstVariant.stock ?? raw.stock) : undefined,
+    isAvailable: raw.in_stock ?? raw.is_available ?? raw.is_active ?? undefined,
   };
 }
 
@@ -74,7 +78,8 @@ export type AuthResult = { access_token?: string; token?: string; user?: ApiUser
 
 async function request<T>(path: string, options: RequestInit = {}) {
   const token = localStorage.getItem("safety-eng-token");
-  const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers: { Accept: "application/json", "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) } });
+  const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
+  const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers: { Accept: "application/json", ...(isFormData ? {} : { "Content-Type": "application/json" }), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) } });
   const payload = await response.json().catch(() => ({})) as ApiResponse;
   if (!response.ok) { const error = new Error(payload.message || `API request failed: ${response.status}`); (error as Error & { status?: number }).status = response.status; throw error; }
   return payload as T & ApiResponse;
@@ -99,3 +104,4 @@ export async function removeCartItem(id: number) { return request<ApiResponse>(`
 export async function getOrderSummary() { return request<ApiResponse>("/order-summary"); }
 export async function createOrder(input: Record<string, unknown> = {}) { return request<ApiResponse>("/orders", { method: "POST", body: JSON.stringify(input) }); }
 export async function getOrders() { return request<ApiResponse>("/orders"); }
+export async function createServiceRequest(input: FormData | Record<string, unknown>) { const body = input instanceof FormData ? input : JSON.stringify(input); return request<ApiResponse>(SERVICE_REQUEST_PATH, { method: "POST", body }); }

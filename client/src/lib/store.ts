@@ -1,6 +1,6 @@
 // SAFETY ENG store model — حلول مراقبة وأمن وحضور وشاشات، مع بيانات موحدة للمتجر.
 export type Product = {
-  id: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; installable?: boolean; installationFee?: number;
+  id: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; brand?: string; stock?: number; isAvailable?: boolean; installable?: boolean; installationFee?: number;
 };
 
 export const products: Product[] = [
@@ -21,6 +21,8 @@ export const products: Product[] = [
 export function getProduct(id: string | number) { return products.find((product) => product.id === Number(id)); }
 export function getInstallationFee(product: Product) { if (product.installable === false) return 0; if (product.installationFee != null) return product.installationFee; if (["كاميرات مراقبة", "بصمة وحضور", "أنظمة أمن", "تحكم وأبواب", "شاشات", "الطابعات والكاشير"].includes(product.category)) return 350; return 0; }
 export function isInstallable(product: Product) { return getInstallationFee(product) > 0; }
+export function getProductBrand(product: Product) { return product.brand?.trim() || "SAFETY ENG"; }
+export function isInStock(product: Product) { if (product.isAvailable === false) return false; return product.stock == null || product.stock > 0; }
 export function formatPrice(price: number) { return `${price.toLocaleString("ar-EG")} ج.م`; }
 export function readIds(key: string): number[] { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
 export function saveIds(key: string, ids: number[]) { localStorage.setItem(key, JSON.stringify(ids)); }
