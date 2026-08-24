@@ -520,3 +520,36 @@ html.dark .site-footer p, html.dark .site-footer-bottom, html.dark .site-footer-
 html.dark .site-footer-links a { background: rgba(255,255,255,.08); border-color: #356d73; }
 html.dark .paper-sticker { background: #5b5126; border-color: #8d792b; color: #fff0a7; }
 @media (prefers-reduced-motion: reduce) { .product-card.is-adding, .favorite-card.is-adding { animation: none; } }
+
+/* Style: SAFETY ENG — الفوتر الجديد يوازن بين أرضية Safety Teal الهادئة وبطاقة تواصل عاجية؛ الروابط موزعة بدل التكدس الرأسي. */
+.site-footer { margin-top: 76px; padding-top: 0; background: #173f46; border-top: 4px solid #f1d77b; color: #effbf7; }
+.site-footer-shell { display: grid; grid-template-columns: minmax(230px, 1.15fr) minmax(150px, .65fr) minmax(280px, 1fr); gap: clamp(28px, 6vw, 82px); padding-top: 48px; padding-bottom: 46px; }
+.footer-brand-block, .footer-nav-block, .footer-contact-block { min-width: 0; }
+.footer-index, .footer-label { display: block; color: #8ed8cf; font-size: 10px; font-weight: 900; letter-spacing: .1em; }
+.footer-logo { display: inline-flex; align-items: center; gap: 10px; margin-top: 17px; color: #fff; font-size: 20px; font-weight: 900; text-decoration: none; }
+.footer-logo .logo-mark { width: 38px; height: 38px; }
+.footer-brand-block > p { max-width: 310px; margin: 16px 0 22px; color: #b9d8d3; font-size: 12px; line-height: 1.9; }
+.footer-primary-cta { display: inline-flex; align-items: center; gap: 8px; border-radius: 9px; padding: 11px 14px; background: #18a7a1; color: #fff; font-size: 11px; font-weight: 900; text-decoration: none; transition: transform .16s cubic-bezier(.23,1,.32,1), background .16s ease; }
+.footer-primary-cta:hover { transform: translateY(-2px); background: #28bcb1; }
+.footer-nav-block { padding-top: 4px; }
+.footer-link-list { display: grid; gap: 10px; margin-top: 18px; }
+.footer-link-list a { display: inline-flex; align-items: center; gap: 8px; width: fit-content; color: #d6ece8; font-size: 12px; text-decoration: none; transition: color .16s ease, transform .16s ease; }
+.footer-link-list a:hover { color: #fff0a7; transform: translateX(-3px); }
+.footer-contact-block { position: relative; overflow: hidden; border: 1px solid rgba(23,63,70,.1); border-radius: 20px; padding: 24px; background: #eaf8f6; color: #173f46; box-shadow: 10px 12px 0 rgba(241,215,123,.14); }
+.footer-contact-block::after { position: absolute; top: -30px; left: -22px; width: 105px; height: 105px; border: 1px dashed rgba(24,167,161,.28); border-radius: 50%; content: ""; }
+.footer-contact-block .footer-label { color: #168e8a; }
+.footer-contact-block h2 { max-width: 260px; margin: 13px 0 8px; font-size: clamp(20px, 2.5vw, 27px); line-height: 1.25; }
+.footer-contact-block p { max-width: 280px; margin: 0; color: #5c7873; font-size: 11px; line-height: 1.8; }
+.footer-contact-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 19px; }
+.footer-contact-actions a { display: inline-flex; align-items: center; gap: 7px; border: 1px solid #c8e6df; border-radius: 8px; padding: 9px 11px; background: rgba(255,255,255,.62); color: #168e8a; font-size: 10px; font-weight: 900; text-decoration: none; transition: background .16s ease, transform .16s ease; }
+.footer-contact-actions a:hover { transform: translateY(-2px); background: #fff; }
+.site-footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 18px; border-top: 1px solid rgba(214,236,232,.18); padding-top: 17px; padding-bottom: 18px; color: #a7cbc5; font-size: 10px; }
+.site-footer-bottom span:last-child { display: inline-flex; align-items: center; gap: 6px; }
+html.dark .site-footer { background: #0d2b33; border-top-color: #8d792b; }
+html.dark .footer-contact-block { border-color: #356d73; background: #173f46; color: #effbf7; box-shadow: 10px 12px 0 rgba(141,121,43,.12); }
+html.dark .footer-contact-block .footer-label { color: #8ed8cf; }
+html.dark .footer-contact-block p { color: #b9d8d3; }
+html.dark .footer-contact-actions a { border-color: #356d73; background: rgba(255,255,255,.08); color: #8ed8cf; }
+html.dark .footer-contact-actions a:hover { background: #214c55; }
+@media (max-width: 760px) { .site-footer { margin-top: 48px; } .site-footer-shell { grid-template-columns: 1fr 1fr; gap: 32px 24px; padding-top: 35px; padding-bottom: 32px; } .footer-brand-block { grid-column: 1 / -1; } .footer-contact-block { grid-column: 1 / -1; } .site-footer-bottom { align-items: flex-start; flex-direction: column; gap: 7px; } }
+@media (max-width: 430px) { .site-footer-shell { grid-template-columns: 1fr; } .footer-brand-block, .footer-contact-block { grid-column: auto; } .footer-nav-block { padding-top: 0; } }
