@@ -1,6 +1,6 @@
 // SAFETY ENG store model — حلول مراقبة وأمن وحضور وشاشات، مع بيانات موحدة للمتجر.
 export type Product = {
-  id: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[];
+  id: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; installable?: boolean; installationFee?: number;
 };
 
 export const products: Product[] = [
@@ -19,6 +19,12 @@ export const products: Product[] = [
   { id: 13, name: "طابعة ليزر متعددة الوظائف", category: "الطابعات والكاشير", price: 7499, oldPrice: 8299, badge: "للمكاتب", image: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=900&q=85", tone: "blue", description: "طابعة ليزر للطباعة والنسخ والمسح، مناسبة للمكاتب ونقاط الخدمة.", specs: ["طباعة ونسخ ومسح", "طباعة أبيض وأسود", "اتصال Wi-Fi", "توفير في الحبر"] },
 ];
 export function getProduct(id: string | number) { return products.find((product) => product.id === Number(id)); }
+export function getInstallationFee(product: Product) { if (product.installable === false) return 0; if (product.installationFee != null) return product.installationFee; if (["كاميرات مراقبة", "بصمة وحضور", "أنظمة أمن", "تحكم وأبواب", "شاشات", "الطابعات والكاشير"].includes(product.category)) return 350; return 0; }
+export function isInstallable(product: Product) { return getInstallationFee(product) > 0; }
 export function formatPrice(price: number) { return `${price.toLocaleString("ar-EG")} ج.م`; }
 export function readIds(key: string): number[] { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
 export function saveIds(key: string, ids: number[]) { localStorage.setItem(key, JSON.stringify(ids)); }
+
+export type CartEntry = { productId: number; quantity: number; installationRequested: boolean; installationFee: number };
+export function readCartEntries(): CartEntry[] { try { const saved = JSON.parse(localStorage.getItem("safety-cart-lines") || "null"); if (Array.isArray(saved)) return saved; const ids = readIds("fluxmart-cart"); return ids.reduce<CartEntry[]>((acc, productId) => { const existing = acc.find((line) => line.productId === productId); if (existing) existing.quantity += 1; else acc.push({ productId, quantity: 1, installationRequested: false, installationFee: 0 }); return acc; }, []); } catch { return []; } }
+export function saveCartEntries(entries: CartEntry[]) { localStorage.setItem("safety-cart-lines", JSON.stringify(entries)); saveIds("fluxmart-cart", entries.flatMap((line) => Array(line.quantity).fill(line.productId))); }
