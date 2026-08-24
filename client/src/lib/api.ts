@@ -68,3 +68,34 @@ export async function fetchCategories(signal?: AbortSignal) {
 }
 
 export { API_BASE_URL };
+
+export type ApiUser = { id: number; name: string; email: string; phone?: string };
+export type AuthResult = { access_token?: string; token?: string; user?: ApiUser };
+
+async function request<T>(path: string, options: RequestInit = {}) {
+  const token = localStorage.getItem("safety-eng-token");
+  const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers: { Accept: "application/json", "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) } });
+  const payload = await response.json().catch(() => ({})) as ApiResponse;
+  if (!response.ok) { const error = new Error(payload.message || `API request failed: ${response.status}`); (error as Error & { status?: number }).status = response.status; throw error; }
+  return payload as T & ApiResponse;
+}
+
+export async function register(input: Record<string, string>) { return request<AuthResult>("/auth/register", { method: "POST", body: JSON.stringify(input) }); }
+export async function login(input: { email?: string; phone?: string; password: string }) {
+  const result = await request<AuthResult>("/auth/login", { method: "POST", body: JSON.stringify(input) });
+  const data = result.data as AuthResult | undefined;
+  const token = data?.access_token || data?.token;
+  if (token) localStorage.setItem("safety-eng-token", token);
+  return result;
+}
+export async function logout() { const result = await request("/auth/logout", { method: "POST" }); localStorage.removeItem("safety-eng-token"); return result; }
+export async function getProductFromApi(id: string | number) { const result = await request<ApiResponse>(`/product/${id}`); const raw = (result.data as any)?.data ?? result.data; return normalizeProduct(raw as RawProduct, Number(id) - 1); }
+export async function getFavorites() { return request<ApiResponse>("/favorites"); }
+export async function toggleFavoriteApi(product_id: number) { return request<ApiResponse>("/favorites", { method: "POST", body: JSON.stringify({ product_id }) }); }
+export async function removeFavoriteApi(id: number) { return request<ApiResponse>(`/favorites/${id}`, { method: "DELETE" }); }
+export async function getCart() { return request<ApiResponse>("/cart"); }
+export async function addCartItem(product_variant_id: number, quantity: number) { return request<ApiResponse>("/cart", { method: "POST", body: JSON.stringify({ product_variant_id, quantity }) }); }
+export async function removeCartItem(id: number) { return request<ApiResponse>(`/cart/${id}`, { method: "DELETE" }); }
+export async function getOrderSummary() { return request<ApiResponse>("/order-summary"); }
+export async function createOrder(input: Record<string, unknown> = {}) { return request<ApiResponse>("/orders", { method: "POST", body: JSON.stringify(input) }); }
+export async function getOrders() { return request<ApiResponse>("/orders"); }
