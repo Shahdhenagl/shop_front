@@ -120,3 +120,16 @@
 - [x] توثيق `VITE_API_BASE_URL` ومتطلبات HTTPS وCORS.
 - [x] تجهيز تعليمات ربط GitHub داخل Hostinger وخطوات النشر.
 - [x] تشغيل build نهائي وحفظ checkpoint ورفع النسخة.
+
+## Hostinger Git deployment guidance
+
+- [ ] تحديد هل Git deploy في Hostinger يشغل build أم يحتاج dist/public جاهز.
+- [ ] تجهيز قيم Repository وBranch وDirectory حسب المستودع الحالي.
+- [ ] توضيح إعداد SPA rewrite وVITE_API_BASE_URL وCORS.
+
+## GitHub Actions FTP deployment
+
+- [x] إنشاء workflow يبني React/Vite وينشر `dist/public` إلى Hostinger.
+- [x] استخدام FTPS/FTP secrets بدون تضمين بيانات حساسة داخل المستودع.
+- [x] توثيق أسماء GitHub Secrets ومسار `public_html` وطريقة التشغيل.
+- [x] اختبار `pnpm check` و`pnpm build` والتحقق من ملف `.htaccess`.
