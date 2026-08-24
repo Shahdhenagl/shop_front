@@ -372,3 +372,13 @@ html.dark .product-metrics span { border-color: #31545c; background: #173943; co
 html.dark .product-metrics b { color: #effbf7; }
 html.dark .product-metrics small { color: #b0c9c0; }
 @media (max-width: 560px) { .product-metrics { gap: 7px; }.product-metrics span { flex: 1 1 100px; min-width: 0; padding-inline: 8px; } }
+
+/* Shop revision: التصنيفات تبقى في شريط علوي، وزر عرض الكل يفتحها على الموبايل فقط. */
+.show-all-categories { display: none; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; color: #168e8a; font-size: 10px; font-weight: 900; }
+.show-all-categories svg { transition: transform .18s ease-out; }
+.show-all-categories svg.is-rotated { transform: rotate(180deg); }
+@media (max-width: 560px) {
+  .category-strip-scroll { max-height: 36px; overflow-y: hidden; }
+  .category-strip-scroll.is-expanded { max-height: none; flex-wrap: wrap; overflow-x: visible; }
+  .show-all-categories { display: inline-flex; }
+}
