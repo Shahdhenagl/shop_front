@@ -360,3 +360,14 @@ html.dark .search-empty p { color: #bfd5cf; }
 .best-seller-badge span { color: #edaa1a; font-size: 11px; line-height: 1; }
 html.dark .best-seller-badge { border-color: #a78539; background: #4e4525; color: #ffe79b; }
 html.dark .best-seller-badge span { color: #ffd35a; }
+
+/* Product metrics — لا تظهر إلا عند وصول بيانات المبيعات أو التقييم أو المشاهدات من API أو مراجعات الزوار المحلية. */
+.product-metrics { display: flex; flex-wrap: wrap; gap: 9px; margin: 16px 0 3px; }
+.product-metrics span { display: inline-flex; align-items: center; gap: 7px; min-width: 112px; border: 1px solid #dce8e2; border-radius: 10px; padding: 8px 10px; background: #f6fbf8; color: #168e8a; }
+.product-metrics span svg { flex: none; }
+.product-metrics b { color: #173f46; font-size: 13px; }
+.product-metrics small { color: #758a83; font-size: 9px; font-weight: 800; }
+html.dark .product-metrics span { border-color: #31545c; background: #173943; color: #a5eee0; }
+html.dark .product-metrics b { color: #effbf7; }
+html.dark .product-metrics small { color: #b0c9c0; }
+@media (max-width: 560px) { .product-metrics { gap: 7px; }.product-metrics span { flex: 1 1 100px; min-width: 0; padding-inline: 8px; } }
