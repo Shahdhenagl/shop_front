@@ -280,6 +280,7 @@ html.dark .service-success-message small { color: #c0d8d1; }
 .filter-toggle-button { display: none; align-items: center; gap: 7px; min-height: 40px; margin-top: 13px; border: 1px solid #cfe2da; border-radius: 9px; padding: 8px 12px; background: #eaf8f6; color: #168e8a; font-size: 11px; font-weight: 900; }
 .filter-toggle-button span { display: grid; min-width: 20px; height: 20px; place-items: center; border-radius: 6px; background: #18a7a1; color: #fff; font-size: 9px; }
 .shop-results-column { min-width: 0; }
+.filter-panel-backdrop { display: none; }
 html.dark .category-strip, html.dark .shop-filter-panel { border-color: #31545c; background: #173943; }
 html.dark .active-filter-chip { border-color: #3b8278; background: #214c55; color: #a5eee0; }
 html.dark .active-filter-chip:hover { border-color: #d56d65; background: #4c3036; color: #ffd0c8; }
