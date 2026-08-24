@@ -1,6 +1,6 @@
 // SAFETY ENG store model — حلول مراقبة وأمن وحضور وشاشات، مع بيانات موحدة للمتجر.
 export type Product = {
-  id: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; brand?: string; stock?: number; salesCount?: number; ratingAverage?: number; ratingCount?: number; viewsCount?: number; isAvailable?: boolean; installable?: boolean; installationFee?: number;
+  id: number; variantId?: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; brand?: string; stock?: number; salesCount?: number; ratingAverage?: number; ratingCount?: number; viewsCount?: number; isAvailable?: boolean; installable?: boolean; installationFee?: number;
 };
 
 export const products: Product[] = [
@@ -31,6 +31,6 @@ export function formatPrice(price: number) { return `${price.toLocaleString("ar-
 export function readIds(key: string): number[] { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
 export function saveIds(key: string, ids: number[]) { localStorage.setItem(key, JSON.stringify(ids)); }
 
-export type CartEntry = { productId: number; quantity: number; installationRequested: boolean; installationFee: number };
+export type CartEntry = { productId: number; variantId?: number; remoteId?: number; quantity: number; installationRequested: boolean; installationFee: number };
 export function readCartEntries(): CartEntry[] { try { const saved = JSON.parse(localStorage.getItem("safety-cart-lines") || "null"); if (Array.isArray(saved)) return saved; const ids = readIds("fluxmart-cart"); return ids.reduce<CartEntry[]>((acc, productId) => { const existing = acc.find((line) => line.productId === productId); if (existing) existing.quantity += 1; else acc.push({ productId, quantity: 1, installationRequested: false, installationFee: 0 }); return acc; }, []); } catch { return []; } }
 export function saveCartEntries(entries: CartEntry[]) { localStorage.setItem("safety-cart-lines", JSON.stringify(entries)); saveIds("fluxmart-cart", entries.flatMap((line) => Array(line.quantity).fill(line.productId))); }

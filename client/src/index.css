@@ -459,3 +459,64 @@ html.dark .service-request-form.contact-form .form-help { color: #9fbab3; }
 .service-request-form .primary-button[aria-busy="true"] { gap: 8px; }
 html.dark .field-error { color: #ff9a8f; }
 html.dark .service-request-form input[aria-invalid="true"] { border-color: #e2766e !important; background: #3a2529 !important; box-shadow: 0 0 0 3px rgba(226,118,110,.16) !important; }
+
+/* Style: SAFETY ENG — لوحة طلباتي تستخدم خط زمني هادئ، وحركة السلة قصيرة تؤكد الفعل بدون تشتيت. */
+.orders-page { padding-top: 58px; padding-bottom: 80px; }
+.orders-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
+.orders-heading h1 { margin-top: 10px; font-size: clamp(38px, 5vw, 62px); line-height: 1; }
+.orders-heading p { margin-top: 13px; color: #71857f; font-size: 13px; }
+.orders-section { margin-top: 22px; border: 1px solid #dcebe5; border-radius: 22px; padding: 22px; background: #fff; box-shadow: 0 15px 36px rgba(23,63,70,.05); }
+.orders-section-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; color: #173f46; }
+.orders-section-title span { display: inline-flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 900; }
+.orders-section-title b { color: #18a7a1; font-size: 11px; }
+.orders-list { display: grid; gap: 12px; }
+.order-card { border: 1px solid #e1eee9; border-radius: 15px; padding: 16px; background: #fbfdfc; }
+.order-card-top, .order-total, .service-history-card { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.order-card-top > div { display: grid; gap: 7px; }
+.order-id { color: #173f46; font-weight: 900; }
+.order-card small, .service-history-card small { display: inline-flex; align-items: center; gap: 5px; color: #839590; font-size: 10px; }
+.order-status { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 7px 10px; background: #eaf8f6; color: #168e8a; font-size: 10px; font-weight: 900; }
+.status-cancelled, .status-rejected { background: #fff0ed; color: #d5655e; }
+.status-completed, .status-confirmed { background: #e7f8f2; color: #127e70; }
+.order-items { display: grid; gap: 8px; margin: 16px 0; border-top: 1px solid #e8f0ed; border-bottom: 1px solid #e8f0ed; padding: 12px 0; }
+.order-items div { display: flex; justify-content: space-between; gap: 12px; color: #5b7771; font-size: 11px; }
+.order-items b, .order-total strong { color: #173f46; }
+.order-total { color: #70817d; font-size: 11px; }
+.order-total strong { font-size: 16px; }
+.orders-empty, .orders-loading, .orders-login-card { display: grid; justify-items: center; gap: 10px; padding: 42px 20px; text-align: center; color: #18a7a1; }
+.orders-empty h3, .orders-login-card h1 { color: #173f46; }
+.orders-empty p, .orders-login-card p, .orders-loading p { max-width: 450px; color: #71857f; font-size: 12px; line-height: 1.9; }
+.orders-login-card { max-width: 650px; margin: 40px auto; border: 1px solid #dcebe5; border-radius: 24px; background: #eaf8f6; }
+.orders-login-card h1 { font-size: clamp(27px, 4vw, 44px); }
+.services-history-list { display: grid; gap: 10px; }
+.service-history-card { border: 1px solid #e1eee9; border-radius: 14px; padding: 13px; background: #fbfdfc; }
+.service-history-card > div:nth-child(2) { display: grid; flex: 1; gap: 6px; }
+.service-history-card > div:nth-child(2) b { color: #173f46; font-size: 12px; }
+.service-history-card p { margin: 0; color: #71857f; font-size: 11px; }
+.service-history-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: #fff2bd; color: #8d792b; }
+.orders-help { display: flex; align-items: center; gap: 12px; margin-top: 20px; border: 1px solid #cfe8e1; border-radius: 17px; padding: 15px 18px; background: #eaf8f6; color: #168e8a; }
+.orders-help > span { display: grid; flex: 1; gap: 4px; }
+.orders-help b { color: #173f46; font-size: 12px; }
+.orders-help small { color: #71857f; font-size: 10px; }
+.product-card.is-adding, .favorite-card.is-adding { animation: cart-pop .28s cubic-bezier(.23,1,.32,1); }
+.is-adding { box-shadow: 0 0 0 3px rgba(24,167,161,.13), 0 9px 24px rgba(24,167,161,.14); }
+@keyframes cart-pop { 0% { transform: scale(1); } 45% { transform: scale(1.025) translateY(-3px); } 100% { transform: scale(1); } }
+html.dark .orders-section, html.dark .order-card, html.dark .service-history-card { border-color: #356d73; background: #102d36; }
+html.dark .orders-section-title, html.dark .order-id, html.dark .order-items b, html.dark .order-total strong, html.dark .orders-empty h3, html.dark .orders-login-card h1, html.dark .service-history-card > div:nth-child(2) b, html.dark .orders-help b { color: #effbf7; }
+html.dark .order-items { border-color: #356d73; }
+html.dark .orders-login-card, html.dark .orders-help { border-color: #356d73; background: #173f46; }
+@media (max-width: 650px) { .orders-page { padding-top: 32px; } .orders-heading { align-items: stretch; flex-direction: column; gap: 16px; } .orders-heading .secondary-button { justify-content: center; } .orders-section { padding: 14px; border-radius: 17px; } .order-card-top, .service-history-card { align-items: flex-start; flex-direction: column; } .service-history-card { display: grid; grid-template-columns: auto 1fr; } .service-history-card .order-status { grid-column: 2; justify-self: start; } .orders-help { align-items: flex-start; flex-wrap: wrap; } .orders-help .secondary-button { width: 100%; justify-content: center; } }
+
+/* Style Decisions: SAFETY ENG — أسطح ورقية عاجية وملصقات وظيفية؛ Safety Teal للتثبيت لا للسيطرة. */
+.paper-sticker { display: inline-flex; width: fit-content; margin-top: 14px; border: 1px solid #f1d77b; border-radius: 5px; padding: 5px 9px; background: #fff6c9; color: #887529; font-size: 10px; font-weight: 900; letter-spacing: .04em; transform: rotate(-1.5deg); box-shadow: 3px 3px 0 rgba(241,215,123,.25); }
+.orders-section, .large-empty, .orders-login-card { background-image: radial-gradient(rgba(24,167,161,.13) .7px, transparent .7px); background-size: 12px 12px; }
+.site-footer { background: linear-gradient(135deg, #eaf8f6 0%, #fff7d8 100%); border-top: 1px solid #cfe8e1; color: #173f46; }
+.site-footer p, .site-footer-bottom, .site-footer-links a { color: #436965; }
+.site-footer-links a { background: rgba(255,255,255,.55); border-color: rgba(24,167,161,.15); }
+.site-footer-links a:hover { background: #fff; color: #168e8a; }
+.footer-cta { background: #18a7a1; color: #fff; }
+html.dark .site-footer { background: linear-gradient(135deg, #173f46 0%, #274f4e 100%); color: #effbf7; border-color: #356d73; }
+html.dark .site-footer p, html.dark .site-footer-bottom, html.dark .site-footer-links a { color: #d8eeea; }
+html.dark .site-footer-links a { background: rgba(255,255,255,.08); border-color: #356d73; }
+html.dark .paper-sticker { background: #5b5126; border-color: #8d792b; color: #fff0a7; }
+@media (prefers-reduced-motion: reduce) { .product-card.is-adding, .favorite-card.is-adding { animation: none; } }

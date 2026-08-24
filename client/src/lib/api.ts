@@ -1,8 +1,9 @@
 // SAFETY ENG API client — يقرأ منتجات Laravel الحقيقية مع fallback آمن للكتالوج المحلي.
-import type { Product } from "./store";
+import { readCartEntries, readIds, saveCartEntries, saveIds, type CartEntry, type Product } from "./store";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "https://ecommerce.pixelmindg.com/api").replace(/\/$/, "");
 export const SERVICE_REQUEST_PATH = import.meta.env.VITE_SERVICE_REQUEST_PATH || "/service-requests";
+export const SERVICE_ORDERS_PATH = import.meta.env.VITE_SERVICE_ORDERS_PATH || "/service-requests";
 
 type ApiResponse = { status?: string; message?: string; data?: unknown };
 type RawProduct = Record<string, any>;
@@ -41,6 +42,7 @@ export function normalizeProduct(raw: RawProduct, index: number): Product {
   const image = imageUrl(images[0]) || "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=900&q=85";
   return {
     id: Number(raw.id ?? index + 1),
+    variantId: firstVariant.id != null ? Number(firstVariant.id) : undefined,
     name: localized(raw.name, "منتج SAFETY ENG"),
     category,
     price,
@@ -99,14 +101,50 @@ export async function login(input: { email?: string; phone?: string; password: s
 }
 export async function logout() { const result = await request("/auth/logout", { method: "POST" }); localStorage.removeItem("safety-eng-token"); return result; }
 export async function getProductFromApi(id: string | number) { const result = await request<ApiResponse>(`/product/${id}`); const raw = (result.data as any)?.data ?? result.data; return normalizeProduct(raw as RawProduct, Number(id) - 1); }
+export function hasAuthToken() { return Boolean(localStorage.getItem("safety-eng-token")); }
+export async function getCurrentUser() { return request<ApiResponse>("/user"); }
 export async function getFavorites() { return request<ApiResponse>("/favorites"); }
 export async function getFavoriteIds() { const payload = await getFavorites(); const raw = (payload.data as any)?.data ?? payload.data ?? []; return Array.isArray(raw) ? raw.map((item: any) => Number(item.product_id ?? item.product?.id ?? item.id)).filter(Boolean) : []; }
 export async function toggleFavoriteApi(product_id: number) { return request<ApiResponse>("/favorites", { method: "POST", body: JSON.stringify({ product_id }) }); }
 export async function removeFavoriteApi(id: number) { return request<ApiResponse>(`/favorites/${id}`, { method: "DELETE" }); }
+export type CloudCartEntry = { remoteId: number; productId: number; variantId: number; quantity: number };
 export async function getCart() { return request<ApiResponse>("/cart"); }
+export async function getCartEntriesFromApi(): Promise<CloudCartEntry[]> {
+  const payload = await getCart();
+  const raw = extractList(payload);
+  return raw.map((item: any) => {
+    const variant = item.product_variant ?? item.productVariant ?? {};
+    const product = variant.product ?? item.product ?? {};
+    return {
+      remoteId: Number(item.id),
+      productId: Number(item.product_id ?? product.id ?? 0),
+      variantId: Number(item.product_variant_id ?? variant.id ?? 0),
+      quantity: Number(item.quantity ?? 1),
+    } satisfies CloudCartEntry;
+  }).filter((item: CloudCartEntry) => item.remoteId && item.variantId && item.productId);
+}
 export async function addCartItem(product_variant_id: number, quantity: number) { return request<ApiResponse>("/cart", { method: "POST", body: JSON.stringify({ product_variant_id, quantity }) }); }
 export async function removeCartItem(id: number) { return request<ApiResponse>(`/cart/${id}`, { method: "DELETE" }); }
 export async function getOrderSummary() { return request<ApiResponse>("/order-summary"); }
 export async function createOrder(input: Record<string, unknown> = {}) { return request<ApiResponse>("/orders", { method: "POST", body: JSON.stringify(input) }); }
 export async function getOrders() { return request<ApiResponse>("/orders"); }
+export async function getServiceRequests() { return request<ApiResponse>(SERVICE_ORDERS_PATH); }
+export async function syncLocalAccountData() {
+  if (!hasAuthToken()) return { favorites: 0, cart: 0 };
+  const localFavoriteIds = readIds("fluxmart-favorites");
+  const cloudFavoriteIds = await getFavoriteIds();
+  for (const productId of localFavoriteIds.filter((id) => !cloudFavoriteIds.includes(id))) await toggleFavoriteApi(productId);
+  const mergedFavoriteIds = Array.from(new Set([...cloudFavoriteIds, ...localFavoriteIds]));
+  saveIds("fluxmart-favorites", mergedFavoriteIds);
+
+  const localCart = readCartEntries();
+  const cloudCart = await getCartEntriesFromApi();
+  for (const line of localCart) {
+    if (line.variantId && !cloudCart.some((item) => item.variantId === line.variantId)) await addCartItem(line.variantId, line.quantity);
+  }
+  const latestCloudCart = await getCartEntriesFromApi();
+  const mappedCart: CartEntry[] = latestCloudCart.map((item) => ({ remoteId: item.remoteId, productId: item.productId, variantId: item.variantId, quantity: item.quantity, installationRequested: false, installationFee: 0 }));
+  saveCartEntries(mappedCart);
+  return { favorites: mergedFavoriteIds.length, cart: mappedCart.length };
+}
 export async function createServiceRequest(input: FormData | Record<string, unknown>) { const body = input instanceof FormData ? input : JSON.stringify(input); return request<ApiResponse>(SERVICE_REQUEST_PATH, { method: "POST", body }); }

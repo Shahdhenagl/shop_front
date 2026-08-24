@@ -3,7 +3,7 @@ import { FormEvent, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { ArrowRight, LockKeyhole, Mail, Phone, UserRound } from "lucide-react";
 import { toast } from "sonner";
-import { login, register } from "@/lib/api";
+import { login, register, syncLocalAccountData } from "@/lib/api";
 
 export default function Auth() {
   const [, navigate] = useLocation();
@@ -13,7 +13,7 @@ export default function Auth() {
     event.preventDefault(); setBusy(true);
     const data = Object.fromEntries(new FormData(event.currentTarget).entries()) as Record<string, string>;
     try {
-      if (mode === "login") { await login({ email: data.email, password: data.password }); toast.success("تم تسجيل الدخول"); navigate("/shop"); }
+      if (mode === "login") { await login({ email: data.email, password: data.password }); await syncLocalAccountData().catch(() => undefined); toast.success("تم تسجيل الدخول ومزامنة بياناتك"); navigate("/shop"); }
       else { await register(data); toast.success("تم إنشاء الحساب، سجّلي الدخول لإكمال الطلب"); setMode("login"); }
     } catch (error) { toast.error(error instanceof Error ? error.message : "تعذر إكمال العملية"); }
     finally { setBusy(false); }

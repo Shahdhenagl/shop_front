@@ -1,5 +1,5 @@
 // Style: SAFETY ENG — تذييل هادئ ومباشر يحافظ على مسارات التنقل الأساسية في كل الصفحات.
-import { ArrowLeft, Home, MessageCircle, ShoppingBag } from "lucide-react";
+import { ArrowLeft, ClipboardList, Home, MessageCircle, ShoppingBag } from "lucide-react";
 import { Link } from "wouter";
 
 export default function SiteFooter() {
@@ -15,6 +15,7 @@ export default function SiteFooter() {
           <Link href="/"><Home size={15} /> الرئيسية</Link>
           <Link href="/shop"><ShoppingBag size={15} /> المتجر</Link>
           <Link href="/contact"><MessageCircle size={15} /> تواصل معنا</Link>
+          <Link href="/orders"><ClipboardList size={15} /> طلباتي</Link>
         </nav>
         <Link href="/contact" className="footer-cta">اطلب معاينة <ArrowLeft size={15} /></Link>
       </div>
