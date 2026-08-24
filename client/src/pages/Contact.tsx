@@ -67,6 +67,7 @@ export default function Contact() {
       <InnerHeader />
       <main className="container contact-page">
         <Breadcrumbs items={[{ label: "تواصل معنا" }]} />
+        <span className="catalog-stamp">SERVICE · 03</span>
         <section className="contact-hero">
           <div>
             <span className="section-kicker"><MessageCircle size={14} /> تواصل معنا</span>
