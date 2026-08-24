@@ -79,6 +79,20 @@ export async function fetchCategories(signal?: AbortSignal) {
 
 export { API_BASE_URL };
 
+export type SiteSettings = {
+  about_us?: string;
+  contact_info?: { phone?: string; whatsapp?: string; address?: string; working_days?: string; working_hours?: string };
+  social_media?: { facebook?: string; instagram?: string; twitter?: string; x?: string } | Record<string, unknown>;
+  privacy_policy?: string;
+  terms_conditions?: string;
+  refund_policy?: string;
+};
+export async function getPublicSettings(signal?: AbortSignal): Promise<SiteSettings> {
+  const result = await request<ApiResponse>("/settings", { signal });
+  const data = result.data as any;
+  return (data?.data ?? data ?? {}) as SiteSettings;
+}
+
 export type ApiUser = { id: number; name: string; email: string; phone?: string };
 export type AuthResult = { access_token?: string; token?: string; user?: ApiUser };
 

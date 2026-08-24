@@ -553,3 +553,29 @@ html.dark .footer-contact-actions a { border-color: #356d73; background: rgba(25
 html.dark .footer-contact-actions a:hover { background: #214c55; }
 @media (max-width: 760px) { .site-footer { margin-top: 48px; } .site-footer-shell { grid-template-columns: 1fr 1fr; gap: 32px 24px; padding-top: 35px; padding-bottom: 32px; } .footer-brand-block { grid-column: 1 / -1; } .footer-contact-block { grid-column: 1 / -1; } .site-footer-bottom { align-items: flex-start; flex-direction: column; gap: 7px; } }
 @media (max-width: 430px) { .site-footer-shell { grid-template-columns: 1fr; } .footer-brand-block, .footer-contact-block { grid-column: auto; } .footer-nav-block { padding-top: 0; } }
+
+/* Style: SAFETY ENG — إعدادات التواصل والسياسات تظهر كبيانات عملية داخل كتل واضحة، مع حركة بسيطة لأيقونات السوشيال. */
+.footer-socials { display: flex; gap: 8px; margin-top: 18px; }
+.footer-socials a { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid rgba(142,216,207,.35); border-radius: 50%; color: #bfe9e2; transition: transform .18s cubic-bezier(.23,1,.32,1), background .18s ease, color .18s ease; }
+.footer-socials a:hover { transform: translateY(-4px) rotate(-5deg); background: #fff0a7; color: #173f46; }
+.footer-policy-label { margin-top: 25px; }
+.footer-policy-list { display: grid; gap: 8px; margin-top: 13px; }
+.footer-policy-list a { color: #a9cbc5; font-size: 10px; text-decoration: none; transition: color .16s ease, transform .16s ease; }
+.footer-policy-list a:hover { color: #fff0a7; transform: translateX(-3px); }
+.footer-contact-details { display: grid; gap: 8px; margin-top: 16px; }
+.footer-contact-details a, .footer-contact-details span { display: flex; align-items: flex-start; gap: 7px; color: #4c706b; font-size: 10px; line-height: 1.7; text-decoration: none; }
+.footer-contact-details a { color: #168e8a; font-weight: 800; }
+.footer-contact-details svg { flex: 0 0 auto; margin-top: 2px; }
+.legal-page { min-height: 62vh; padding-top: 58px; padding-bottom: 55px; }
+.legal-page h1 { margin: 12px 0 25px; font-size: clamp(34px, 5vw, 58px); }
+.legal-paper { position: relative; max-width: 800px; border: 1px solid #dcebe5; border-radius: 20px; padding: clamp(24px, 5vw, 48px); background: #fff; box-shadow: 8px 8px 0 rgba(241,215,123,.2); }
+.legal-paper::before { position: absolute; top: 20px; right: 20px; width: 7px; height: 7px; border-radius: 50%; background: #f37868; box-shadow: 13px 0 #18a7a1, 26px 0 #f1d77b; content: ""; }
+.legal-paper p { margin: 0 0 18px; color: #5f7773; font-size: 13px; line-height: 2.05; white-space: pre-wrap; }
+.legal-paper p:last-child { margin-bottom: 0; }
+html.dark .footer-socials a { border-color: #356d73; color: #bfe9e2; }
+html.dark .footer-socials a:hover { background: #8d792b; color: #fff8d8; }
+html.dark .footer-policy-list a { color: #b9d8d3; }
+html.dark .footer-contact-details a, html.dark .footer-contact-details span { color: #b9d8d3; }
+html.dark .legal-paper { border-color: #356d73; background: #173943; box-shadow: 8px 8px 0 rgba(141,121,43,.14); }
+html.dark .legal-paper p { color: #c5dbd5; }
+@media (max-width: 430px) { .footer-socials { margin-top: 15px; } .footer-contact-block { padding: 20px; } .legal-page { padding-top: 35px; } }
