@@ -13,6 +13,8 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProductDetails from "./pages/ProductDetails";
 import Auth from "./pages/Auth";
+import Contact from "./pages/Contact";
+import SearchResults from "./pages/SearchResults";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -34,6 +36,6 @@ function ScrollToTop() {
 }
 
 function Router() {
-  return <><ScrollToTop /><Switch><Route path="/" component={Home} /><Route path="/shop" component={Shop} /><Route path="/product/:id" component={ProductDetails} /><Route path="/favorites" component={Favorites} /><Route path="/cart" component={Cart} /><Route path="/checkout" component={Checkout} /><Route path="/auth" component={Auth} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch></>;
+  return <><ScrollToTop /><Switch><Route path="/" component={Home} /><Route path="/shop" component={Shop} /><Route path="/product/:id" component={ProductDetails} /><Route path="/favorites" component={Favorites} /><Route path="/cart" component={Cart} /><Route path="/checkout" component={Checkout} /><Route path="/auth" component={Auth} /><Route path="/contact" component={Contact} /><Route path="/search" component={SearchResults} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch></>;
 }
 export default function App() { return <ErrorBoundary><ThemeProvider defaultTheme="light" switchable><TooltipProvider><Toaster position="top-center" /><Router /></TooltipProvider></ThemeProvider></ErrorBoundary>; }
