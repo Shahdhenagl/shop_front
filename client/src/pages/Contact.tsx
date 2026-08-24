@@ -1,7 +1,7 @@
 // Style: SAFETY ENG — صفحة تواصل دافئة وعملية، تجعل طلب المعاينة خطوة مباشرة وواضحة.
 import { FormEvent, useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, Check, LocateFixed, MapPin, MessageCircle, Moon, Sun, Upload, Wrench } from "lucide-react";
+import { ArrowLeft, Check, LocateFixed, LoaderCircle, MapPin, MessageCircle, Moon, Sun, Upload, Wrench } from "lucide-react";
 import { toast } from "sonner";
 import { createServiceRequest } from "@/lib/api";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -10,6 +10,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 export default function Contact() {
   const { theme, toggleTheme } = useTheme();
   const [serviceFiles, setServiceFiles] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [serviceLocation, setServiceLocation] = useState("");
 
   const captureLocation = () => {
@@ -30,6 +31,7 @@ export default function Contact() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.append("location", serviceLocation);
+    setIsSubmitting(true);
     try {
       await createServiceRequest(data);
       toast.success("تم حفظ طلبك بنجاح، وسيتواصل معك فريق SAFETY ENG قريبًا");
@@ -40,6 +42,8 @@ export default function Contact() {
       const message = `مرحبًا SAFETY ENG، أريد التواصل وطلب خدمة.\nالاسم: ${data.get("name")}\nالهاتف: ${data.get("phone")}\nالخدمة: ${data.get("service")}\nتفاصيل المكان: ${data.get("details") || "غير مذكورة"}\nالموقع: ${serviceLocation || "سيتم إرساله لاحقًا"}\nالصور المختارة: ${serviceFiles.length ? serviceFiles.map((file) => file.name).join("، ") : "لم يتم إرفاق صور"}`;
       window.open(`https://wa.me/201604400000?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
       toast.error("تعذر حفظ الطلب عبر النظام، جهزنا لك رسالة واتساب كبديل");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -77,8 +81,8 @@ export default function Contact() {
             <label>صور المكان<input type="file" name="photos" accept="image/*" multiple onChange={(event) => setServiceFiles(Array.from(event.target.files || []))} /></label>
             {serviceFiles.length > 0 && <div className="file-chips">{serviceFiles.map((file) => <span key={file.name}><Upload size={12} /> {file.name}</span>)}</div>}
             <div className="location-actions"><button type="button" className="location-button" onClick={captureLocation}><LocateFixed size={15} /> تحديد موقعي تلقائيًا</button><label className="location-input"><MapPin size={15} /><input value={serviceLocation} onChange={(event) => setServiceLocation(event.target.value)} placeholder="أو الصق رابط Google Maps" /></label></div>
-            <small className="form-help">بعد الإرسال ستفتح رسالة واتساب جاهزة بالبيانات وأسماء الصور المختارة لإرفاقها في المحادثة.</small>
-            <button className="primary-button" type="submit">إرسال الطلب عبر واتساب <MessageCircle size={16} /></button>
+            <small className="form-help">سيتم حفظ الطلب في النظام أولًا، وإذا تعذر الاتصال سنجهز رسالة واتساب بالبيانات كخطة احتياطية.</small>
+            <button className="primary-button" type="submit" disabled={isSubmitting}>{isSubmitting ? <><LoaderCircle className="loading-spinner" size={16} /> جاري إرسال الطلب...</> : <>إرسال الطلب <MessageCircle size={16} /></>}</button>
           </form>
         </section>
         <Link href="/shop" className="secondary-button contact-shop-link">تصفحي المنتجات <ArrowLeft size={16} /></Link>
