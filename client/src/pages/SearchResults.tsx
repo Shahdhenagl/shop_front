@@ -1,4 +1,5 @@
 // Style: SAFETY ENG — نتائج بحث مباشرة ومرتبة، مع فلاتر عملية تساعد العميل على قرار شراء واضح.
+import InnerHeader from "@/components/InnerHeader";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { ArrowLeft, ArrowUpLeft, Check, Heart, Moon, Search, ShoppingBag, Sun, Wrench } from "lucide-react";
@@ -54,7 +55,7 @@ export default function SearchResults() {
 
   return (
     <div dir="rtl" className="min-h-screen bg-[#fbfaf7] text-[#172f3c]">
-      <header className="inner-header"><div className="container flex items-center justify-between"><Link href="/" className="brand-lockup" dir="ltr"><span className="logo-mark" aria-hidden="true"><span className="logo-graphic">S</span></span><b>SAFETY<span> ENG</span></b></Link><div className="inner-actions"><button className="theme-toggle" onClick={toggleTheme} aria-label="تبديل الوضع الليلي">{theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}</button><Link href="/shop" className="icon-link">المتجر</Link><Link href="/favorites" className="icon-link"><Heart size={18} /> المفضلة</Link><Link href="/cart" className="icon-link"><ShoppingBag size={18} /> العربة</Link></div></div></header>
+      <InnerHeader />
       <main className="container search-results-page">
         <Breadcrumbs items={[{ label: "نتائج البحث" }]} />
         <div className="search-results-heading"><div><span className="section-kicker"><Search size={14} /> بحث SAFETY ENG</span><h1>نتائج البحث<br /><em>بوضوح.</em></h1><p>{query ? `نتائج مطابقة لـ «${query}»` : "اكتبي اسم المنتج أو الفئة لعرض النتائج المناسبة."}</p></div><Link href="/shop" className="secondary-button">تصفحي كل المنتجات <ArrowLeft size={16} /></Link></div>
