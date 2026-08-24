@@ -133,3 +133,51 @@
 - [x] استخدام FTPS/FTP secrets بدون تضمين بيانات حساسة داخل المستودع.
 - [x] توثيق أسماء GitHub Secrets ومسار `public_html` وطريقة التشغيل.
 - [x] اختبار `pnpm check` و`pnpm build` والتحقق من ملف `.htaccess`.
+
+## Hostinger no-Node recovery
+
+- [ ] اعتماد GitHub Actions لبناء المشروع خارج Hostinger.
+- [ ] رفع `dist/public` فقط إلى `public_html` عبر FTP/FTPS.
+- [ ] إزالة الاعتماد على أوامر npm/pnpm داخل Hostinger.
+- [ ] التحقق من FTP secrets ومسار حساب FTP والدومين.
+
+## GitHub Actions pnpm fix
+
+- [x] إزالة تعارض نسخ pnpm بين packageManager وdevDependency داخل workflow.
+- [x] إعادة تشغيل check/build ثم رفع workflow المصحح إلى main.
+- [ ] إعادة تشغيل GitHub Action والتحقق من خطوة FTPS.
+
+## FTP server DNS fix
+
+- [ ] استبدال `HOSTINGER_FTP_SERVER` باسم Host FTP الصحيح من Hostinger، وليس IP أو رابط hPanel.
+- [ ] إعادة تشغيل workflow بعد تحديث السر والتحقق من نجاح FTPS.
+- [ ] فتح الدومين والتأكد من وجود index.html وassets داخل public_html.
+
+- [x] تحديد أن قيمة `HOSTINGER_FTP_SERVER` يجب أن تكون `92.113.28.65` بدون `ftp://`.
+- [ ] تحديث Secret وإعادة تشغيل workflow والتحقق من نتيجة FTPS.
+
+## Hero and about naming
+
+- [x] استبدال صورة manus-storage المكسورة بتكوين Hero ثابت متوافق مع Hostinger.
+- [x] تحسين ترتيب ونصوص Hero ليشرح الأمن والمكاتب والكاشير والخدمات.
+- [x] تغيير نص رابط About Us إلى «ماذا عنا» وربطه بقسم التعريف.
+- [x] اختبار نسخة Hostinger ثم حفظ checkpoint ورفع التعديل.
+
+## Conditional installation option
+
+- [x] إخفاء بطاقة خدمة التركيب من المنتج غير القابل للتركيب.
+- [x] إظهارها فقط عندما تكون `installable` أو `installationFee` مفعّلة.
+- [x] اختبار منتج مكتب/كيبورد مقابل كاميرا أو شاشة قابلة للتركيب.
+
+## Dark mode visual polish
+
+- [x] رفع تباين خلفية قسم الخدمات وكروته في الوضع الليلي.
+- [x] تحسين ألوان الحقول والحدود والنصوص في نموذج طلب الخدمة.
+- [x] تقليل الفراغات الرأسية وتحسين توازن القسم على سطح المكتب والموبايل.
+- [x] اختبار Light/Dark وحفظ checkpoint ورفع النسخة.
+
+## Product page scroll fix
+
+- [x] تحديد سبب بقاء موضع التمرير عند فتح صفحة المنتج.
+- [x] إضافة تمرير تلقائي إلى أعلى الصفحة عند تغيير المسار.
+- [x] اختبار التنقل والبناء ثم حفظ النسخة ورفعها إلى GitHub.
