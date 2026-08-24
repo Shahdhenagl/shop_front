@@ -235,6 +235,15 @@ html.dark .service-success-message small { color: #c0d8d1; }
 @media (max-width: 560px) { .category-filter-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }.category-filter-pill { justify-content: space-between; }.filter-control-grid { grid-template-columns: 1fr; }.quick-view-actions { display: grid; grid-template-columns: 1fr; } }
 /* Shop filter layout — التصنيفات فوق، والفلاتر التفصيلية في لوحة جانبية واضحة. */
 .category-strip { margin-top: 26px; padding: 15px 17px; border: 1px solid #e2ebe6; border-radius: 15px; background: #fff; box-shadow: 0 12px 28px #173f460a; }
+.active-filter-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; min-height: 27px; margin-top: 10px; }
+.active-filter-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 27px; border: 1px solid #b8ddd4; border-radius: 999px; padding: 5px 9px; background: #eaf8f6; color: #168e8a; font-size: 9px; font-weight: 900; transition: .18s; }
+.active-filter-chip:hover { border-color: #f37868; background: #fff0ed; color: #d5655e; }
+.active-filter-chip svg { transition: transform .18s; }
+.active-filter-chip:hover svg { transform: rotate(90deg); }
+.no-active-filters { color: #9aa9a4; font-size: 9px; }
+.mobile-filter-apply { display: none; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 42px; margin-top: 4px; border-radius: 9px; background: #18a7a1; color: #fff; font-size: 11px; font-weight: 900; box-shadow: 0 8px 17px #18a7a126; }
+.mobile-filter-apply:hover { background: #168e8a; }
+
 .category-strip-heading { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin-bottom: 11px; }
 .category-strip-heading h3 { margin-top: 3px; color: #173f46; font-size: 14px; }
 .category-strip-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 2px 1px 6px; scrollbar-color: #9bcac2 transparent; scrollbar-width: thin; }
@@ -262,6 +271,10 @@ html.dark .service-success-message small { color: #c0d8d1; }
 .filter-toggle-button span { display: grid; min-width: 20px; height: 20px; place-items: center; border-radius: 6px; background: #18a7a1; color: #fff; font-size: 9px; }
 .shop-results-column { min-width: 0; }
 html.dark .category-strip, html.dark .shop-filter-panel { border-color: #31545c; background: #173943; }
+html.dark .active-filter-chip { border-color: #3b8278; background: #214c55; color: #a5eee0; }
+html.dark .active-filter-chip:hover { border-color: #d56d65; background: #4c3036; color: #ffd0c8; }
+html.dark .no-active-filters { color: #9db9b1; }
+
 html.dark .category-strip-heading h3, html.dark .shop-filter-panel-head h3 { color: #effbf7; }
 html.dark .category-strip-pill { border-color: #31545c; background: #102d36; color: #c5dbd4; }
 html.dark .category-strip-pill b { background: #214c55; color: #a5eee0; }
@@ -270,7 +283,7 @@ html.dark .shop-filter-panel-head, html.dark .filter-panel-divider { border-colo
 html.dark .shop-filter-panel .shop-search, html.dark .shop-filter-panel .toolbar-field select { border-color: #31545c; background: #102d36; color: #effbf7; }
 html.dark .shop-filter-panel .shop-search input, html.dark .shop-filter-panel .toolbar-field { color: #d6e9e2; }
 html.dark .filter-toggle-button { border-color: #3b7075; background: #1b4a53; color: #a5eee0; }
-@media (max-width: 900px) { .shop-filter-layout { display: block; }.shop-filter-panel { position: fixed; inset: 0 auto 0 0; z-index: 60; width: min(340px, 91vw); height: 100dvh; overflow-y: auto; border-radius: 0 18px 18px 0; transform: translateX(-105%); transition: transform .22s cubic-bezier(.23,1,.32,1); }.shop-filter-panel.is-open { transform: translateX(0); }.shop-filter-panel-head { position: sticky; top: 0; z-index: 1; background: inherit; }.filter-panel-close { display: grid; }.filter-panel-backdrop { display: block; position: fixed; inset: 0; z-index: 55; border: 0; background: #06191f88; opacity: 0; visibility: hidden; transition: opacity .2s, visibility .2s; }.filter-panel-backdrop.is-open { opacity: 1; visibility: visible; }.filter-toggle-button { display: inline-flex; }.shop-results-column { margin-top: 14px; } }
+@media (max-width: 900px) { .shop-filter-layout { display: block; }.shop-filter-panel { position: fixed; inset: 0 auto 0 0; z-index: 60; width: min(340px, 91vw); height: 100dvh; overflow-y: auto; border-radius: 0 18px 18px 0; transform: translateX(-105%); transition: transform .22s cubic-bezier(.23,1,.32,1); }.shop-filter-panel.is-open { transform: translateX(0); }.shop-filter-panel-head { position: sticky; top: 0; z-index: 1; background: inherit; }.filter-panel-close { display: grid; }.mobile-filter-apply { display: inline-flex; }.filter-panel-backdrop { display: block; position: fixed; inset: 0; z-index: 55; border: 0; background: #06191f88; opacity: 0; visibility: hidden; transition: opacity .2s, visibility .2s; }.filter-panel-backdrop.is-open { opacity: 1; visibility: visible; }.filter-toggle-button { display: inline-flex; }.shop-results-column { margin-top: 14px; } }
 @media (max-width: 560px) { .category-strip { padding: 13px 12px; }.category-strip-heading { align-items: start; }.category-strip-heading h3 { font-size: 12px; }.category-strip-scroll { margin-inline: -5px; padding-inline: 5px; }.category-strip-pill { min-height: 33px; font-size: 9px; }.filter-toggle-button { width: 100%; justify-content: center; } }
 .search-box button { display: grid; flex: none; place-items: center; border: 0; padding: 3px; color: #168e8a; background: transparent; cursor: pointer; }
 .search-box button:hover { color: #0e6f6c; }
