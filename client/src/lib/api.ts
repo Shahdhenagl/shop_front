@@ -100,6 +100,7 @@ export async function login(input: { email?: string; phone?: string; password: s
 export async function logout() { const result = await request("/auth/logout", { method: "POST" }); localStorage.removeItem("safety-eng-token"); return result; }
 export async function getProductFromApi(id: string | number) { const result = await request<ApiResponse>(`/product/${id}`); const raw = (result.data as any)?.data ?? result.data; return normalizeProduct(raw as RawProduct, Number(id) - 1); }
 export async function getFavorites() { return request<ApiResponse>("/favorites"); }
+export async function getFavoriteIds() { const payload = await getFavorites(); const raw = (payload.data as any)?.data ?? payload.data ?? []; return Array.isArray(raw) ? raw.map((item: any) => Number(item.product_id ?? item.product?.id ?? item.id)).filter(Boolean) : []; }
 export async function toggleFavoriteApi(product_id: number) { return request<ApiResponse>("/favorites", { method: "POST", body: JSON.stringify({ product_id }) }); }
 export async function removeFavoriteApi(id: number) { return request<ApiResponse>(`/favorites/${id}`, { method: "DELETE" }); }
 export async function getCart() { return request<ApiResponse>("/cart"); }
