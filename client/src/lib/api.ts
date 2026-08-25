@@ -93,7 +93,7 @@ export async function getPublicSettings(signal?: AbortSignal): Promise<SiteSetti
   return (data?.data ?? data ?? {}) as SiteSettings;
 }
 
-export type ApiUser = { id: number; name: string; email: string; phone?: string };
+export type ApiUser = { id: number; name: string; email: string; phone?: string; avatar?: string; profile_photo_url?: string; image?: string };
 export type AuthResult = { access_token?: string; token?: string; user?: ApiUser };
 
 async function request<T>(path: string, options: RequestInit = {}) {
@@ -106,17 +106,36 @@ async function request<T>(path: string, options: RequestInit = {}) {
 }
 
 export async function register(input: Record<string, string>) { return request<AuthResult>("/auth/register", { method: "POST", body: JSON.stringify(input) }); }
+const AUTH_USER_STORAGE_KEY = "safety-eng-user";
+export function readStoredUser(): ApiUser | null { try { const raw = localStorage.getItem(AUTH_USER_STORAGE_KEY); return raw ? JSON.parse(raw) as ApiUser : null; } catch { return null; } }
+function saveStoredUser(user?: ApiUser) { if (user?.id) localStorage.setItem(AUTH_USER_STORAGE_KEY, JSON.stringify(user)); }
 export async function login(input: { email?: string; phone?: string; password: string }) {
   const result = await request<AuthResult>("/auth/login", { method: "POST", body: JSON.stringify(input) });
   const data = result.data as AuthResult | undefined;
   const token = data?.access_token || data?.token;
   if (token) localStorage.setItem("safety-eng-token", token);
+  saveStoredUser(data?.user);
+  window.dispatchEvent(new Event("safety-auth-updated"));
   return result;
 }
-export async function logout() { const result = await request("/auth/logout", { method: "POST" }); localStorage.removeItem("safety-eng-token"); return result; }
+export async function logout() { const result = await request("/auth/logout", { method: "POST" }); localStorage.removeItem("safety-eng-token"); localStorage.removeItem(AUTH_USER_STORAGE_KEY); window.dispatchEvent(new Event("safety-auth-updated")); return result; }
 export async function getProductFromApi(id: string | number) { const result = await request<ApiResponse>(`/product/${id}`); const raw = (result.data as any)?.data ?? result.data; return normalizeProduct(raw as RawProduct, Number(id) - 1); }
 export function hasAuthToken() { return Boolean(localStorage.getItem("safety-eng-token")); }
-export async function getCurrentUser() { return request<ApiResponse>("/user"); }
+export async function getCurrentUser() {
+  const result = await request<ApiResponse>("/user");
+  const payload = result.data as any;
+  const user = (payload?.data ?? payload?.user ?? payload) as ApiUser;
+  saveStoredUser(user);
+  return result;
+}
+export async function updateCurrentUser(input: { name: string; email: string; phone?: string }) {
+  const result = await request<ApiResponse>("/user", { method: "PATCH", body: JSON.stringify(input) });
+  const payload = result.data as any;
+  const user = (payload?.data ?? payload?.user ?? payload) as ApiUser;
+  saveStoredUser(user);
+  window.dispatchEvent(new Event("safety-auth-updated"));
+  return result;
+}
 export async function getFavorites() { return request<ApiResponse>("/favorites"); }
 export async function getFavoriteIds() { const payload = await getFavorites(); const raw = (payload.data as any)?.data ?? payload.data ?? []; return Array.isArray(raw) ? raw.map((item: any) => Number(item.product_id ?? item.product?.id ?? item.id)).filter(Boolean) : []; }
 export async function toggleFavoriteApi(product_id: number) { return request<ApiResponse>("/favorites", { method: "POST", body: JSON.stringify({ product_id }) }); }
