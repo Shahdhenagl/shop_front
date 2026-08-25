@@ -808,3 +808,43 @@ html.dark .logout-confirm-dialog p, html.dark .account-edit-form label { color: 
 html.dark .account-edit-form input { border-color: #356d73; color: #effbf7; background: #214c55; }
 html.dark .account-order-main small, html.dark .account-orders-loading { color: #a9c0ba; }
 @media (max-width: 700px) { .account-profile { align-items: flex-start; flex-wrap: wrap; } .account-edit-trigger { width: 100%; } .account-edit-form { grid-template-columns: 1fr; } .account-edit-form .primary-button { justify-self: stretch; } .account-section-heading { align-items: flex-start; flex-direction: column; } .account-order-row { gap: 8px; } .order-status { padding-inline: 6px; font-size: 8px; } }
+
+/* Style: SAFETY ENG — header repair: صف واحد ثابت على الديسكتوب، بحث مستقل في الوسط، وبوب‑أب مرتبط بالحقل لا بالهيدر كله. */
+@media (min-width: 761px) {
+  .inner-header-row { display: flex; flex-wrap: nowrap; direction: ltr; min-height: 78px; gap: clamp(10px, 1.4vw, 20px); }
+  .inner-header-row > .inner-actions { order: 1; flex: 0 0 auto; min-width: max-content; margin: 0; }
+  .inner-header-row > .header-search-wrap { order: 2; flex: 0 1 clamp(220px, 25vw, 340px); width: auto; min-width: 220px; margin: 0; }
+  .inner-header-row > .inner-nav { order: 3; flex: 1 1 auto; min-width: 0; margin: 0; justify-content: center; gap: 2px; }
+  .inner-header-row > .brand-lockup { order: 4; flex: 0 0 auto; margin: 0; }
+  .inner-header-row .inner-nav-link { padding-inline: clamp(7px, .8vw, 12px); }
+  .inner-header-row > .header-search-wrap .inner-search { width: 100%; }
+  .header-search-popover { top: calc(100% + 12px); inset-inline: 0 auto; width: min(390px, calc(100vw - 32px)); }
+}
+@media (min-width: 761px) and (max-width: 1120px) {
+  .inner-header-row { gap: 9px; }
+  .inner-header-row > .header-search-wrap { flex-basis: 230px; min-width: 190px; }
+  .inner-header-row .inner-nav-link { padding-inline: 6px; font-size: 10px; }
+  .inner-header-row .inner-actions { gap: 4px; }
+  .inner-header-row .inner-actions .icon-link > span:not(.header-badge), .inner-header-row .account-menu-trigger > span { display: none; }
+  .inner-header-row .inner-actions .icon-link { gap: 0; }
+}
+@media (min-width: 681px) {
+  .site-header-row { display: flex; flex-wrap: nowrap; direction: ltr; }
+  .site-header-row > .site-header-actions { order: 1; flex: 0 0 auto; min-width: max-content; }
+  .site-header-row > .home-header-search { order: 2; flex: 0 1 clamp(200px, 24vw, 300px); width: clamp(200px, 24vw, 300px); min-width: 190px; }
+  .site-header-row > .site-nav { order: 3; flex: 1 1 auto; min-width: 0; justify-content: center; }
+  .site-header-row > .group { order: 4; flex: 0 0 auto; }
+  .home-header-search .suggestions-popover { top: calc(100% + 12px); }
+}
+@media (min-width: 681px) and (max-width: 1120px) {
+  .site-header-row { gap: 10px; }
+  .site-header-row > .site-nav { gap: 2px; }
+  .site-header-row > .site-nav a { padding-inline: 7px; font-size: 11px; }
+  .site-header-row > .site-header-actions { gap: 5px; }
+  .site-header-row > .site-header-actions .account-menu-trigger > span { display: none; }
+  .site-header-row > .site-header-actions .account-menu-trigger { gap: 0; }
+}
+@media (max-width: 760px) {
+  .inner-header-row > .header-search-wrap { position: relative; z-index: 180; }
+  .header-search-popover { position: absolute; top: calc(100% + 8px); inset-inline: 0; width: 100%; max-height: min(430px, calc(100vh - 190px)); overflow-y: auto; }
+}
