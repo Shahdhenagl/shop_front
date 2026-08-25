@@ -1,6 +1,6 @@
 // SAFETY ENG store model — حلول مراقبة وأمن وحضور وشاشات، مع بيانات موحدة للمتجر.
 export type Product = {
-  id: number; variantId?: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; brand?: string; stock?: number; salesCount?: number; ratingAverage?: number; ratingCount?: number; viewsCount?: number; isAvailable?: boolean; installable?: boolean; installationFee?: number;
+  id: number; variantId?: number; name: string; category: string; price: number; oldPrice: number; badge: string; image: string; tone: string; description: string; specs: string[]; brand?: string; stock?: number; salesCount?: number; ratingAverage?: number; ratingCount?: number; viewsCount?: number; isAvailable?: boolean; installable?: boolean; installationFee?: number; isNew?: boolean; isSpecialOffer?: boolean;
 };
 
 export const products: Product[] = [
@@ -27,6 +27,19 @@ export function getProductSalesScore(product: Product) { return product.salesCou
 export function getProductRatingScore(product: Product) { return product.ratingAverage ?? 0; }
 export function getProductViewsScore(product: Product) { return product.viewsCount ?? 0; }
 export function isBestSeller(product: Product) { return product.salesCount != null && product.salesCount > 0; }
+export type ProductBadgeKind = "new" | "offer" | "default";
+export function getProductBadgeKind(product: Product): ProductBadgeKind {
+  const badge = product.badge?.trim().toLowerCase() || "";
+  if (product.isSpecialOffer || badge.includes("عرض") || badge.includes("خصم") || badge.includes("offer") || badge.includes("sale") || badge.includes("discount")) return "offer";
+  if (product.isNew || badge === "جديد" || badge.includes("new")) return "new";
+  return "default";
+}
+export function getProductBadgeLabel(product: Product) {
+  const kind = getProductBadgeKind(product);
+  if (kind === "offer") return "عرض خاص";
+  if (kind === "new") return "جديد";
+  return product.badge || "متاح الآن";
+}
 export function formatPrice(price: number) { return `${price.toLocaleString("ar-EG")} ج.م`; }
 export function readIds(key: string): number[] { try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; } }
 export function saveIds(key: string, ids: number[]) { localStorage.setItem(key, JSON.stringify(ids)); }

@@ -25,6 +25,10 @@ function imageUrl(value: unknown) {
   return /^https?:\/\//.test(String(raw)) ? String(raw) : `${API_BASE_URL.replace(/\/api$/, "")}/storage/${String(raw).replace(/^storage\//, "")}`;
 }
 
+function booleanish(value: unknown) {
+  return value === true || value === 1 || value === "1" || value === "true";
+}
+
 function extractList(payload: ApiResponse) {
   const data = payload?.data as any;
   if (Array.isArray(data)) return data;
@@ -37,6 +41,11 @@ export function normalizeProduct(raw: RawProduct, index: number): Product {
   const variants = Array.isArray(raw.variants) ? raw.variants : [];
   const firstVariant = variants[0] || {};
   const price = Number(raw.price ?? firstVariant.price ?? 0);
+  const oldPrice = Number(raw.compare_price ?? raw.old_price ?? price);
+  const discountPercentage = Number(raw.discount_percentage ?? raw.discount_percent ?? raw.discount ?? 0) || 0;
+  const rawBadge = localized(raw.badge ?? raw.label ?? raw.tag, "");
+  const isNew = booleanish(raw.is_new ?? raw.is_new_product ?? raw.new ?? raw.isNew) || /(^|\s)new(\s|$)|جديد/i.test(rawBadge);
+  const isSpecialOffer = booleanish(raw.is_special_offer ?? raw.special_offer ?? raw.on_sale ?? raw.isSpecialOffer) || oldPrice > price || discountPercentage > 0 || /عرض|خصم|offer|sale|discount/i.test(rawBadge);
   const category = localized(raw.category_name ?? raw.category, "حلول SAFETY ENG");
   const images = Array.isArray(raw.images) ? raw.images : [];
   const image = imageUrl(images[0]) || "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=900&q=85";
@@ -46,8 +55,10 @@ export function normalizeProduct(raw: RawProduct, index: number): Product {
     name: localized(raw.name, "منتج SAFETY ENG"),
     category,
     price,
-    oldPrice: Number(raw.compare_price ?? raw.old_price ?? price),
-    badge: raw.discount_percentage ? `خصم ${raw.discount_percentage}%` : "متاح الآن",
+    oldPrice,
+    badge: rawBadge || (isSpecialOffer ? "عرض خاص" : isNew ? "جديد" : "متاح الآن"),
+    isNew,
+    isSpecialOffer,
     image,
     tone: ["coral", "teal", "lime", "peach", "blue", "yellow"][index % 6],
     description: localized(raw.description, "حل عملي من حلول SAFETY ENG."),
