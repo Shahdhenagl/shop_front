@@ -713,3 +713,15 @@ html.dark .home-header-search .suggestion-item b, html.dark .mobile-search .sugg
   .header-search-popover { width: 100%; }
   .inner-actions { order: 2; }
 }
+
+/* Style: SAFETY ENG — keyboard search states: الاقتراح المحدد يأخذ Safety Teal هادئًا، والحساب يظهر كمسار مستقل بجانب أدوات الشراء. */
+.header-search-suggestion.is-active { background: #eaf8f6; transform: translateX(-2px); }
+.header-search-suggestion.is-active b { color: #168e8a; }
+.account-link { color: #168e8a !important; }
+.account-link svg { color: #18a7a1; }
+.account-link:hover { background: #eaf8f6; border-radius: 9px; padding-inline: 7px; }
+html.dark .header-search-suggestion.is-active { background: #214c55; }
+html.dark .header-search-suggestion.is-active b { color: #8ed8cf; }
+html.dark .account-link { color: #8ed8cf !important; }
+html.dark .account-link:hover { background: #214c55; }
+@media (max-width: 1100px) { .inner-actions { gap: 7px; } .inner-actions .icon-link { gap: 4px; } }

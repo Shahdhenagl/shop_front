@@ -1,6 +1,6 @@
-/* Style: SAFETY ENG — هيدر RTL موحّد؛ الشعار ثم التنقل ثم البحث ثم أيقونات التحكم، مع بوب‑أب واضح لا يتداخل مع الروابط. */
-import { FormEvent, useEffect, useState } from "react";
-import { ArrowLeft, ClipboardList, Heart, Home, MessageCircle, Moon, Search, ShoppingBag, Sun, X } from "lucide-react";
+/* Style: SAFETY ENG — هيدر RTL موحّد؛ الشعار ثم التنقل ثم البحث ثم أيقونات التحكم، مع بوب‑أب واضح وتحكم كامل بلوحة المفاتيح. */
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { ArrowLeft, ClipboardList, Heart, Home, MessageCircle, Moon, Search, ShoppingBag, Sun, UserRound, X } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useProducts } from "@/hooks/useProducts";
@@ -9,13 +9,39 @@ import { formatPrice, readIds } from "@/lib/store";
 function HeaderSearch() {
   const [location, navigate] = useLocation();
   const { products } = useProducts();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   useEffect(() => {
     const nextQuery = new URLSearchParams(location.split("?")[1] || "").get("q") || "";
     setQuery(nextQuery);
   }, [location]);
+
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [query]);
+
+  useEffect(() => {
+    if (!isFocused) return;
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) setIsFocused(false);
+    };
+    const closeOnEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsFocused(false);
+        inputRef.current?.blur();
+      }
+    };
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsidePointer);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isFocused]);
 
   const normalizedQuery = query.trim().toLowerCase();
   const suggestions = normalizedQuery
@@ -31,21 +57,47 @@ function HeaderSearch() {
     navigate(normalizedQuery ? `/search?q=${encodeURIComponent(query.trim())}` : "/search");
   };
 
+  const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setIsFocused(false);
+      inputRef.current?.blur();
+      return;
+    }
+    if (!showPopup || suggestions.length === 0) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveIndex((current) => (current + 1) % suggestions.length);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveIndex((current) => (current - 1 + suggestions.length) % suggestions.length);
+    } else if (event.key === "Enter" && activeIndex >= 0) {
+      event.preventDefault();
+      const product = suggestions[activeIndex];
+      setIsFocused(false);
+      navigate(`/product/${product.id}`);
+    }
+  };
+
   return (
-    <div className="header-search-wrap">
+    <div className="header-search-wrap" ref={wrapperRef}>
       <form className="inner-search" onSubmit={submitSearch} role="search">
         <Search size={16} aria-hidden="true" />
         <input
+          ref={inputRef}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           onFocus={() => setIsFocused(true)}
+          onKeyDown={handleInputKeyDown}
           placeholder="دوري على اللي محتاجاه..."
           aria-label="البحث في المتجر"
           aria-expanded={showPopup}
           aria-controls="header-search-popover"
+          aria-activedescendant={activeIndex >= 0 ? `header-search-suggestion-${suggestions[activeIndex]?.id}` : undefined}
+          autoComplete="off"
         />
         {query && (
-          <button type="button" className="header-search-clear" onClick={() => setQuery("")} aria-label="مسح البحث">
+          <button type="button" className="header-search-clear" onClick={() => { setQuery(""); inputRef.current?.focus(); }} aria-label="مسح البحث">
             <X size={13} />
           </button>
         )}
@@ -59,14 +111,17 @@ function HeaderSearch() {
             <>
               <div className="header-search-popover-head">
                 <span>نتائج سريعة</span>
-                <small>{suggestions.length} اقتراحات</small>
+                <small>{suggestions.length} اقتراحات · استخدمي ↑ ↓ ثم Enter</small>
               </div>
-              {suggestions.map((product) => (
+              {suggestions.map((product, index) => (
                 <Link
                   key={product.id}
+                  id={`header-search-suggestion-${product.id}`}
                   href={`/product/${product.id}`}
-                  className="header-search-suggestion"
+                  className={`header-search-suggestion ${activeIndex === index ? "is-active" : ""}`}
                   role="option"
+                  aria-selected={activeIndex === index}
+                  onMouseEnter={() => setActiveIndex(index)}
                   onMouseDown={() => setIsFocused(false)}
                 >
                   <img src={product.image} alt="" />
@@ -98,17 +153,21 @@ export default function InnerHeader() {
   const { theme, toggleTheme } = useTheme();
   const [favoriteCount, setFavoriteCount] = useState(() => readIds("fluxmart-favorites").length);
   const [cartCount, setCartCount] = useState(() => readIds("fluxmart-cart").length);
+  const [isSignedIn, setIsSignedIn] = useState(() => Boolean(localStorage.getItem("safety-eng-token")));
 
   useEffect(() => {
-    const syncCounts = () => {
+    const syncHeaderState = () => {
       setFavoriteCount(readIds("fluxmart-favorites").length);
       setCartCount(readIds("fluxmart-cart").length);
+      setIsSignedIn(Boolean(localStorage.getItem("safety-eng-token")));
     };
-    window.addEventListener("storage", syncCounts);
-    window.addEventListener("safety-cart-updated", syncCounts);
+    window.addEventListener("storage", syncHeaderState);
+    window.addEventListener("safety-cart-updated", syncHeaderState);
+    window.addEventListener("safety-auth-updated", syncHeaderState);
     return () => {
-      window.removeEventListener("storage", syncCounts);
-      window.removeEventListener("safety-cart-updated", syncCounts);
+      window.removeEventListener("storage", syncHeaderState);
+      window.removeEventListener("safety-cart-updated", syncHeaderState);
+      window.removeEventListener("safety-auth-updated", syncHeaderState);
     };
   }, []);
 
@@ -128,6 +187,9 @@ export default function InnerHeader() {
         <HeaderSearch />
         <div className="inner-actions">
           <button className="theme-toggle" onClick={toggleTheme} aria-label="تبديل الوضع الليلي">{theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}</button>
+          <Link href={isSignedIn ? "/orders" : "/auth"} className="icon-link header-icon-link account-link" aria-label={isSignedIn ? "حسابي وطلباتي" : "تسجيل الدخول"}>
+            <UserRound size={18} /> <span>{isSignedIn ? "حسابي" : "دخول"}</span>
+          </Link>
           <Link href="/favorites" className="icon-link header-icon-link" aria-label={`المفضلة، ${favoriteCount} منتجات`}>
             <Heart size={18} /> <span>المفضلة</span><b className="header-badge">{favoriteCount}</b>
           </Link>
