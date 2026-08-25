@@ -725,3 +725,36 @@ html.dark .header-search-suggestion.is-active b { color: #8ed8cf; }
 html.dark .account-link { color: #8ed8cf !important; }
 html.dark .account-link:hover { background: #214c55; }
 @media (max-width: 1100px) { .inner-actions { gap: 7px; } .inner-actions .icon-link { gap: 4px; } }
+
+/* Style: SAFETY ENG — account menu and search loading: قائمة الحساب واضحة، والتحميل داخل الحقل لا يزاحم النص أو الأيقونات. */
+.account-menu-wrap { position: relative; z-index: 140; }
+.account-menu-trigger { cursor: pointer; }
+.account-menu-trigger.is-open { border-radius: 9px; background: #eaf8f6; color: #168e8a !important; }
+.account-menu-popover { position: absolute; top: calc(100% + 12px); inset-inline-end: 0; z-index: 160; width: 238px; overflow: hidden; border: 1px solid #cfe8e1; border-radius: 15px; background: #fff; box-shadow: 0 20px 45px rgba(23,63,70,.16), 0 3px 0 rgba(241,215,123,.55); }
+.account-menu-heading { display: flex; align-items: center; gap: 9px; border-bottom: 1px solid #e8f1ed; padding: 13px; background: #f7fcfa; }
+.account-menu-avatar { display: grid; flex: 0 0 auto; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: #eaf8f6; color: #18a7a1; }
+.account-menu-heading > span:last-child { display: grid; min-width: 0; gap: 3px; }
+.account-menu-heading b { overflow: hidden; color: #173f46; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.account-menu-heading small { color: #7d928c; font-size: 9px; line-height: 1.5; }
+.account-menu-popover > button { display: flex; width: 100%; align-items: center; gap: 9px; min-height: 42px; border-bottom: 1px solid #edf3ef; padding: 10px 13px; color: #466765; background: #fff; font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 10px; font-weight: 800; text-align: right; transition: background .16s ease-out, color .16s ease-out, padding .16s ease-out; }
+.account-menu-popover > button:hover { padding-inline-start: 17px; background: #eaf8f6; color: #168e8a; }
+.account-menu-popover > button:last-child { border-bottom: 0; }
+.account-menu-popover > button svg { flex: 0 0 auto; color: #18a7a1; }
+.account-menu-popover > button.account-menu-logout { color: #dc6e61; }
+.account-menu-popover > button.account-menu-logout svg { color: #f37868; }
+.account-menu-popover > button.account-menu-logout:hover { background: #fff0ed; color: #c85c50; }
+.account-menu-popover > button:disabled { cursor: wait; opacity: .65; }
+.header-search-spinner { flex: 0 0 auto; color: #18a7a1; }
+.header-search-loading { display: flex; align-items: center; gap: 10px; min-height: 80px; padding: 15px; color: #18a7a1; }
+.header-search-loading > span { display: grid; gap: 3px; }
+.header-search-loading b { color: #173f46; font-size: 11px; }
+.header-search-loading small { color: #7d928c; font-size: 9px; }
+html.dark .account-menu-popover { border-color: #356d73; background: #173943; box-shadow: 0 20px 45px rgba(0,0,0,.28), 0 3px 0 rgba(141,121,43,.55); }
+html.dark .account-menu-trigger.is-open { background: #214c55; color: #8ed8cf !important; }
+html.dark .account-menu-heading { border-color: #31545c; background: #214c55; }
+html.dark .account-menu-heading b, html.dark .header-search-loading b { color: #effbf7; }
+html.dark .account-menu-heading small, html.dark .header-search-loading small { color: #a9c0ba; }
+html.dark .account-menu-popover > button { border-color: #31545c; color: #c5dbd5; background: #173943; }
+html.dark .account-menu-popover > button:hover { background: #214c55; color: #8ed8cf; }
+html.dark .account-menu-popover > button.account-menu-logout:hover { background: #4c3030; color: #ffb0a5; }
+@media (max-width: 760px) { .account-menu-popover { position: fixed; top: 116px; inset-inline: 17px auto; width: min(238px, calc(100vw - 34px)); } }

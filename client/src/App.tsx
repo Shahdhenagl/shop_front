@@ -16,6 +16,7 @@ import Auth from "./pages/Auth";
 import Contact from "./pages/Contact";
 import SearchResults from "./pages/SearchResults";
 import Orders from "./pages/Orders";
+import Account from "./pages/Account";
 import LegalPage from "./pages/LegalPage";
 
 function ScrollToTop() {
@@ -38,6 +39,6 @@ function ScrollToTop() {
 }
 
 function Router() {
-  return <><ScrollToTop /><Switch><Route path="/" component={Home} /><Route path="/shop" component={Shop} /><Route path="/product/:id" component={ProductDetails} /><Route path="/favorites" component={Favorites} /><Route path="/cart" component={Cart} /><Route path="/checkout" component={Checkout} /><Route path="/auth" component={Auth} /><Route path="/contact" component={Contact} /><Route path="/search" component={SearchResults} /><Route path="/orders" component={Orders} /><Route path="/privacy">{() => <LegalPage kind="privacy_policy" />}</Route><Route path="/terms">{() => <LegalPage kind="terms_conditions" />}</Route><Route path="/refund">{() => <LegalPage kind="refund_policy" />}</Route><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch></>;
+  return <><ScrollToTop /><Switch><Route path="/" component={Home} /><Route path="/shop" component={Shop} /><Route path="/product/:id" component={ProductDetails} /><Route path="/favorites" component={Favorites} /><Route path="/cart" component={Cart} /><Route path="/checkout" component={Checkout} /><Route path="/auth" component={Auth} /><Route path="/contact" component={Contact} /><Route path="/search" component={SearchResults} /><Route path="/orders" component={Orders} /><Route path="/account" component={Account} /><Route path="/privacy">{() => <LegalPage kind="privacy_policy" />}</Route><Route path="/terms">{() => <LegalPage kind="terms_conditions" />}</Route><Route path="/refund">{() => <LegalPage kind="refund_policy" />}</Route><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch></>;
 }
 export default function App() { return <ErrorBoundary><ThemeProvider defaultTheme="light" switchable><TooltipProvider><Toaster position="top-center" /><Router /></TooltipProvider></ThemeProvider></ErrorBoundary>; }

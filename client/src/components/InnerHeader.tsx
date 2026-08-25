@@ -1,14 +1,15 @@
 /* Style: SAFETY ENG — هيدر RTL موحّد؛ الشعار ثم التنقل ثم البحث ثم أيقونات التحكم، مع بوب‑أب واضح وتحكم كامل بلوحة المفاتيح. */
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ClipboardList, Heart, Home, MessageCircle, Moon, Search, ShoppingBag, Sun, UserRound, X } from "lucide-react";
+import { ArrowLeft, ClipboardList, Heart, Home, LoaderCircle, MessageCircle, Moon, Search, ShoppingBag, Sun, X } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useProducts } from "@/hooks/useProducts";
 import { formatPrice, readIds } from "@/lib/store";
+import AccountMenu from "@/components/AccountMenu";
 
 function HeaderSearch() {
   const [location, navigate] = useLocation();
-  const { products } = useProducts();
+  const { products, loading: productsLoading } = useProducts();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
@@ -23,6 +24,20 @@ function HeaderSearch() {
   useEffect(() => {
     setActiveIndex(-1);
   }, [query]);
+
+  useEffect(() => {
+    const openSearchShortcut = (event: globalThis.KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const isTypingTarget = Boolean(target && (["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) || target.isContentEditable));
+      if (event.key === "/" && !isTypingTarget && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        event.preventDefault();
+        setIsFocused(true);
+        window.requestAnimationFrame(() => inputRef.current?.focus());
+      }
+    };
+    document.addEventListener("keydown", openSearchShortcut);
+    return () => document.removeEventListener("keydown", openSearchShortcut);
+  }, []);
 
   useEffect(() => {
     if (!isFocused) return;
@@ -82,7 +97,7 @@ function HeaderSearch() {
   return (
     <div className="header-search-wrap" ref={wrapperRef}>
       <form className="inner-search" onSubmit={submitSearch} role="search">
-        <Search size={16} aria-hidden="true" />
+        {productsLoading && normalizedQuery ? <LoaderCircle className="header-search-spinner loading-spinner" size={16} aria-label="جاري تحميل الاقتراحات" /> : <Search size={16} aria-hidden="true" />}
         <input
           ref={inputRef}
           value={query}
@@ -107,7 +122,9 @@ function HeaderSearch() {
       </form>
       {showPopup && (
         <div id="header-search-popover" className="header-search-popover" role="listbox" aria-label="اقتراحات البحث">
-          {suggestions.length > 0 ? (
+          {productsLoading ? (
+            <div className="header-search-loading" role="status" aria-live="polite"><LoaderCircle className="loading-spinner" size={20} /><span><b>جاري تحميل الاقتراحات</b><small>لحظة ونجيب لك المنتجات المناسبة.</small></span></div>
+          ) : suggestions.length > 0 ? (
             <>
               <div className="header-search-popover-head">
                 <span>نتائج سريعة</span>
@@ -153,13 +170,13 @@ export default function InnerHeader() {
   const { theme, toggleTheme } = useTheme();
   const [favoriteCount, setFavoriteCount] = useState(() => readIds("fluxmart-favorites").length);
   const [cartCount, setCartCount] = useState(() => readIds("fluxmart-cart").length);
-  const [isSignedIn, setIsSignedIn] = useState(() => Boolean(localStorage.getItem("safety-eng-token")));
+
 
   useEffect(() => {
     const syncHeaderState = () => {
       setFavoriteCount(readIds("fluxmart-favorites").length);
       setCartCount(readIds("fluxmart-cart").length);
-      setIsSignedIn(Boolean(localStorage.getItem("safety-eng-token")));
+
     };
     window.addEventListener("storage", syncHeaderState);
     window.addEventListener("safety-cart-updated", syncHeaderState);
@@ -187,9 +204,7 @@ export default function InnerHeader() {
         <HeaderSearch />
         <div className="inner-actions">
           <button className="theme-toggle" onClick={toggleTheme} aria-label="تبديل الوضع الليلي">{theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}</button>
-          <Link href={isSignedIn ? "/orders" : "/auth"} className="icon-link header-icon-link account-link" aria-label={isSignedIn ? "حسابي وطلباتي" : "تسجيل الدخول"}>
-            <UserRound size={18} /> <span>{isSignedIn ? "حسابي" : "دخول"}</span>
-          </Link>
+          <AccountMenu />
           <Link href="/favorites" className="icon-link header-icon-link" aria-label={`المفضلة، ${favoriteCount} منتجات`}>
             <Heart size={18} /> <span>المفضلة</span><b className="header-badge">{favoriteCount}</b>
           </Link>
