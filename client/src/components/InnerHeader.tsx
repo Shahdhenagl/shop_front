@@ -15,6 +15,8 @@ function HeaderSearch() {
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [popupMounted, setPopupMounted] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const nextQuery = new URLSearchParams(location.split("?")[1] || "").get("q") || "";
@@ -23,7 +25,9 @@ function HeaderSearch() {
 
   useEffect(() => {
     setActiveIndex(-1);
-  }, [query]);
+    if (!normalizedQuery) setPopupMounted(false);
+    else if (isFocused) setPopupMounted(true);
+  }, [query, isFocused]);
 
   useEffect(() => {
     const openSearchShortcut = (event: globalThis.KeyboardEvent) => {
@@ -42,11 +46,11 @@ function HeaderSearch() {
   useEffect(() => {
     if (!isFocused) return;
     const closeOnOutsidePointer = (event: PointerEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) setIsFocused(false);
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) closePopup();
     };
     const closeOnEscape = (event: globalThis.KeyboardEvent) => {
       if (event.key === "Escape") {
-        setIsFocused(false);
+        closePopup();
         inputRef.current?.blur();
       }
     };
@@ -56,7 +60,7 @@ function HeaderSearch() {
       document.removeEventListener("pointerdown", closeOnOutsidePointer);
       document.removeEventListener("keydown", closeOnEscape);
     };
-  }, [isFocused]);
+  }, [isFocused, query]);
 
   const normalizedQuery = query.trim().toLowerCase();
   const suggestions = normalizedQuery
@@ -66,16 +70,27 @@ function HeaderSearch() {
     : [];
   const showPopup = isFocused && normalizedQuery.length > 0;
 
+  const openPopup = () => {
+    if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
+    setIsFocused(true);
+    if (normalizedQuery) setPopupMounted(true);
+  };
+  const closePopup = () => {
+    setIsFocused(false);
+    if (!normalizedQuery) { setPopupMounted(false); return; }
+    if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = window.setTimeout(() => setPopupMounted(false), 180);
+  };
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsFocused(false);
+    closePopup();
     navigate(normalizedQuery ? `/search?q=${encodeURIComponent(query.trim())}` : "/search");
   };
 
   const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
       event.preventDefault();
-      setIsFocused(false);
+      closePopup();
       inputRef.current?.blur();
       return;
     }
@@ -89,7 +104,7 @@ function HeaderSearch() {
     } else if (event.key === "Enter" && activeIndex >= 0) {
       event.preventDefault();
       const product = suggestions[activeIndex];
-      setIsFocused(false);
+      closePopup();
       navigate(`/product/${product.id}`);
     }
   };
@@ -102,7 +117,7 @@ function HeaderSearch() {
           ref={inputRef}
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          onFocus={() => setIsFocused(true)}
+          onFocus={openPopup}
           onKeyDown={handleInputKeyDown}
           placeholder="دوري على اللي محتاجاه..."
           aria-label="البحث في المتجر"
@@ -120,8 +135,8 @@ function HeaderSearch() {
           <ArrowLeft size={15} />
         </button>
       </form>
-      {showPopup && (
-        <div id="header-search-popover" className="header-search-popover" role="listbox" aria-label="اقتراحات البحث">
+      {popupMounted && normalizedQuery.length > 0 && (
+        <div id="header-search-popover" className={`header-search-popover ${isFocused ? "" : "is-closing"}`} role="listbox" aria-label="اقتراحات البحث">
           {productsLoading ? (
             <div className="header-search-loading" role="status" aria-live="polite"><LoaderCircle className="loading-spinner" size={20} /><span><b>جاري تحميل الاقتراحات</b><small>لحظة ونجيب لك المنتجات المناسبة.</small></span></div>
           ) : suggestions.length > 0 ? (
@@ -139,7 +154,7 @@ function HeaderSearch() {
                   role="option"
                   aria-selected={activeIndex === index}
                   onMouseEnter={() => setActiveIndex(index)}
-                  onMouseDown={() => setIsFocused(false)}
+                  onMouseDown={closePopup}
                 >
                   <img src={product.image} alt="" />
                   <span>
@@ -149,7 +164,7 @@ function HeaderSearch() {
                   <ArrowLeft size={14} aria-hidden="true" />
                 </Link>
               ))}
-              <button type="button" className="header-search-all" onMouseDown={(event) => event.preventDefault()} onClick={() => { setIsFocused(false); navigate(`/search?q=${encodeURIComponent(query.trim())}`); }}>
+              <button type="button" className="header-search-all" onMouseDown={(event) => event.preventDefault()} onClick={() => { closePopup(); navigate(`/search?q=${encodeURIComponent(query.trim())}`); }}>
                 عرض كل النتائج <ArrowLeft size={14} />
               </button>
             </>
@@ -157,7 +172,7 @@ function HeaderSearch() {
             <div className="header-search-empty" role="status">
               <Search size={18} />
               <span><b>مفيش نتائج مطابقة</b><small>جربي اسم منتج أو فئة مختلفة.</small></span>
-              <button type="button" onMouseDown={(event) => event.preventDefault()} onClick={() => { setIsFocused(false); navigate("/search"); }}>عرض الكتالوج</button>
+              <button type="button" onMouseDown={(event) => event.preventDefault()} onClick={() => { closePopup(); navigate("/search"); }}>عرض الكتالوج</button>
             </div>
           )}
         </div>

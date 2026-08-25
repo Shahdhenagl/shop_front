@@ -848,3 +848,39 @@ html.dark .account-order-main small, html.dark .account-orders-loading { color: 
   .inner-header-row > .header-search-wrap { position: relative; z-index: 180; }
   .header-search-popover { position: absolute; top: calc(100% + 8px); inset-inline: 0; width: 100%; max-height: min(430px, calc(100vh - 190px)); overflow-y: auto; }
 }
+
+/* Style: SAFETY ENG — search interaction polish: البوب‑أب يفتح من موضعه ويغلق بهدوء، والهيدر يختصر نفسه قبل عرض 360px. */
+.header-search-popover, .home-header-search .suggestions-popover, .mobile-search .suggestions-popover { transform-origin: top center; animation: search-popover-in .2s cubic-bezier(.23,1,.32,1) both; }
+.header-search-popover.is-closing, .home-header-search .suggestions-popover.is-closing, .mobile-search .suggestions-popover.is-closing { animation: search-popover-out .18s cubic-bezier(.77,0,.175,1) both; pointer-events: none; }
+@keyframes search-popover-in { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes search-popover-out { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-5px) scale(.98); } }
+@media (max-width: 360px) {
+  .container { padding-inline: 12px; }
+  .site-header-row { height: 62px; gap: 4px; }
+  .site-header-row > .group { gap: 5px; }
+  .site-header-row > .group .logo-mark { width: 32px; height: 32px; border-radius: 10px; }
+  .site-header-row > .group .logo-graphic { font-size: 17px; }
+  .site-header-row > .group > span:last-child { font-size: 15px; letter-spacing: .02em; }
+  .site-header-actions { gap: 2px !important; }
+  .site-header-actions .theme-toggle, .site-header-actions .header-count, .site-header-actions .cart-button { width: 32px; height: 32px; }
+  .site-header-actions .theme-toggle svg, .site-header-actions .header-count svg, .site-header-actions .cart-button svg { width: 16px; height: 16px; }
+  .site-header-actions .header-count span, .site-header-actions .cart-button span { top: -3px; left: -3px; min-width: 13px; width: 13px; height: 13px; padding: 0; font-size: 8px; }
+  .site-header-actions .account-menu-trigger { width: 32px; min-height: 32px; gap: 0; padding-inline: 4px; }
+  .site-header-actions .account-menu-trigger > span { display: none; }
+  .site-header-actions .account-menu-trigger svg { width: 17px; height: 17px; }
+  .mobile-search { padding-inline: 12px; }
+  .mobile-search .search-box { height: 39px; padding-inline: 10px; }
+  .mobile-search .search-box input { font-size: 11px; }
+  .site-header-row .site-nav { inset-inline: 12px; }
+  .header-search-popover { max-height: min(360px, calc(100vh - 170px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header-search-popover, .home-header-search .suggestions-popover, .mobile-search .suggestions-popover, .header-search-popover.is-closing, .home-header-search .suggestions-popover.is-closing, .mobile-search .suggestions-popover.is-closing { animation: none; }
+}
+
+/* Style: SAFETY ENG — micro mobile header: الحفاظ على علامة الشعار كاملة المساحة دون قصّ النص في الصفحة الرئيسية. */
+@media (max-width: 360px) {
+  .site-header-row > .group { flex: 0 0 32px; width: 32px; }
+  .site-header-row > .group > span:last-child { display: none; }
+  .site-header-row > .group .logo-mark { flex: 0 0 32px; }
+}
