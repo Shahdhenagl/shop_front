@@ -624,3 +624,39 @@ html.dark .site-footer { background: linear-gradient(145deg, #123a43 0%, #0d2b33
 html.dark .catalog-stamp { background: #5b5126; color: #fff0a7; border-color: #f1d77b; }
 html.dark .shop-intro::after, html.dark .contact-hero::after { border-color: rgba(142,216,207,.22); }
 @media (max-width: 560px) { .catalog-stamp { margin-top: 12px; } .shop-intro::after, .contact-hero::after { width: 48px; height: 48px; left: 2%; bottom: 0; } .catalog-group-heading::before { height: 30px; } }
+
+/* Style: SAFETY ENG — header hierarchy: في الديسكتوب يأتي البحث بين التنقل وأيقونات التحكم، وعلى الموبايل يصبح صفًا واضحًا كامل العرض. */
+.inner-header-row { display: grid; grid-template-columns: auto minmax(280px, 1fr) minmax(220px, .75fr) auto; gap: 16px; min-height: 78px; align-items: center; }
+.inner-nav { margin-inline: 0; justify-self: center; }
+.inner-search { display: flex; min-width: 0; width: min(100%, 300px); align-items: center; gap: 8px; justify-self: center; border: 1px solid #e1e8e3; border-radius: 14px; padding: 4px 7px 4px 12px; background: #fbfaf7; color: #7b8d89; transition: border-color .18s ease-out, box-shadow .18s ease-out, background .18s ease-out; }
+.inner-search:focus-within { border-color: #18a7a1; background: #fff; box-shadow: 0 0 0 4px rgba(24,167,161,.10); }
+.inner-search input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; color: #294650; font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 11px; }
+.inner-search input::placeholder { color: #a0afaa; }
+.inner-search button { display: grid; flex: 0 0 auto; place-items: center; width: 31px; height: 31px; border-radius: 9px; color: #168e8a; transition: transform .16s ease-out, background .16s ease-out; }
+.inner-search button:hover { transform: translateX(-2px); background: #eaf8f6; }
+.inner-actions { justify-self: start; }
+html.dark .inner-search { border-color: #31545c; background: #102d36; color: #9bd6ce; }
+html.dark .inner-search:focus-within { border-color: #8ed8cf; background: #173f46; }
+html.dark .inner-search input { color: #effbf7; }
+html.dark .inner-search input::placeholder { color: #89aaa5; }
+html.dark .inner-search button:hover { background: #214c55; }
+@media (max-width: 1100px) { .inner-header-row { grid-template-columns: auto minmax(220px, 1fr) minmax(190px, .7fr) auto; gap: 10px; } .inner-nav { gap: 0; } .inner-nav-link { padding-inline: 9px; } .inner-actions { gap: 5px; } }
+@media (max-width: 760px) { .inner-header-row { display: flex; flex-wrap: wrap; min-height: 68px; gap: 8px 10px; padding-block: 10px; } .brand-lockup { order: 1; } .inner-actions { order: 2; margin-inline-start: auto; } .inner-search { order: 3; width: 100%; min-height: 42px; justify-self: stretch; } .inner-nav { order: 4; flex: 1 1 100%; margin-inline: 0; } }
+
+/* Style: SAFETY ENG — home header hierarchy: direction ltr يحافظ على ترتيب الشعار يمينًا، ثم التنقل، ثم البحث، ثم الأيقونات على اليسار. */
+@media (min-width: 681px) {
+  .site-header-row > .site-header-actions { order: 1; }
+  .site-header-row > .home-header-search { order: 2; flex: 0 1 clamp(190px, 22vw, 270px); width: clamp(190px, 22vw, 270px); }
+  .site-header-row > .site-nav { order: 3; }
+  .site-header-row > .group { order: 4; }
+}
+@media (max-width: 680px) { .site-header-row > .home-header-search { display: none; } }
+
+/* Style: SAFETY ENG — desktop RTL visual order is explicit: actions left, search, navigation, brand right. */
+@media (min-width: 761px) {
+  .inner-header-row { grid-template-columns: auto minmax(220px, .78fr) minmax(270px, 1fr) auto; }
+  .inner-header-row > .inner-actions { grid-column: 1; }
+  .inner-header-row > .inner-search { grid-column: 2; }
+  .inner-header-row > .inner-nav { grid-column: 3; }
+  .inner-header-row > .brand-lockup { grid-column: 4; margin-left: 0; }
+}
